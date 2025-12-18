@@ -14,8 +14,13 @@ export default function Events() {
     fetchEvents();
   }, []);
 
-  const handleRegister = async (eventId) => {
-    await registerForEvent(eventId, user.email);
+  const handleRegister = async (event) => {
+    if (event.registrations?.includes(user.email)) {
+      alert("You are already registered for this event");
+      return;
+    }
+
+    await registerForEvent(event.id, user.email);
     alert("Registered successfully!");
   };
 
@@ -37,8 +42,13 @@ export default function Events() {
           <p>{event.description}</p>
           <small>{event.club} | {event.date}</small>
           <br /><br />
-          <button onClick={() => handleRegister(event.id)}>
-            Register
+          <button
+            onClick={() => handleRegister(event)}
+            disabled={event.registrations?.includes(user.email)}
+          >
+            {event.registrations?.includes(user.email)
+              ? "Registered"
+              : "Register"}
           </button>
         </div>
       ))}
