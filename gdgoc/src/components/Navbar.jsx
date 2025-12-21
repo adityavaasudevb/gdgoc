@@ -28,6 +28,7 @@ export default function Navbar() {
         <Link to="/events">Events</Link>
         <Link to="/chatbot">Chatbot</Link>
         <Link to="/past-events">Past Events</Link>
+        <Link to="/notifications">Notifications</Link>
 
         <button onClick={handleLogout}>Logout</button>
       </div>

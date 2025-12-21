@@ -16,6 +16,7 @@ export default function ClubDetail() {
 
   useEffect(() => {
     const fetchData = async () => {
+      // 1️⃣ Fetch clubs
       const clubs = await getClubs();
       const foundClub = clubs.find(c => c.id === clubId);
 
@@ -23,19 +24,24 @@ export default function ClubDetail() {
 
       setClub(foundClub);
 
-      // ✅ ADMIN CHECK
+      // 2️⃣ Admin check
       if (user && foundClub.adminEmails?.includes(user.email)) {
         setIsAdmin(true);
       } else {
         setIsAdmin(false);
       }
 
+      // 3️⃣ Fetch events
       const allEvents = await getEvents();
-      const upcoming = allEvents.filter(
-        e =>
-          e.club.toLowerCase() === foundClub.name.toLowerCase() &&
-          isFutureEvent(e.date)
-      );
+
+      // 4️⃣ Filter + SORT upcoming events
+      const upcoming = allEvents
+        .filter(
+          e =>
+            e.club.toLowerCase() === foundClub.name.toLowerCase() &&
+            isFutureEvent(e.date)
+        )
+        .sort((a, b) => new Date(a.date) - new Date(b.date));
 
       setEvents(upcoming);
     };
@@ -56,28 +62,28 @@ export default function ClubDetail() {
       {/* 🔒 ADMIN CONTROLS */}
       {isAdmin && (
         <div
-            style={{
+          style={{
             margin: "20px 0",
             padding: "12px",
             border: "1px dashed #aaa",
             borderRadius: "6px",
             background: "#fafafa",
-            }}
+          }}
         >
-            <strong>Admin Controls</strong>
+          <strong>Admin Controls</strong>
 
-            <CreateEventForm
+          <CreateEventForm
+            clubId={club.id}
             clubName={club.name}
             onCreated={() => window.location.reload()}
-            />
+          />
 
-            <EditClubForm
+          <EditClubForm
             club={club}
             onUpdated={() => window.location.reload()}
-            />
+          />
         </div>
-        )}
-
+      )}
 
       <hr />
 
@@ -101,9 +107,7 @@ export default function ClubDetail() {
           <p>{event.description}</p>
           <small>{event.date}</small>
           <br /><br />
-          <button
-            onClick={() => window.open(event.registrationLink, "_blank")}
-          >
+          <button onClick={() => window.open(event.registrationLink, "_blank")}>
             Register
           </button>
         </div>

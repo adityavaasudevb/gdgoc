@@ -1,7 +1,9 @@
 import { useState } from "react";
-import { addEvent } from "../firebase/firestore";
+import { addEvent, createNotification, db } from "../firebase/firestore";
+import { getDocs, collection } from "firebase/firestore";
 
-export default function CreateEventForm({ clubName, onCreated }) {
+export default function CreateEventForm({ clubId, clubName, onCreated }) {
+
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [date, setDate] = useState("");
@@ -19,12 +21,28 @@ export default function CreateEventForm({ clubName, onCreated }) {
     setLoading(true);
 
     try {
+      // 1️⃣ Create event
       await addEvent({
         title,
         description,
         date,
         club: clubName,
         registrationLink,
+      });
+
+      // 2️⃣ Notify users who bookmarked this club
+      const usersSnapshot = await getDocs(collection(db, "users"));
+
+      usersSnapshot.forEach(async (userDoc) => {
+        const userData = userDoc.data();
+
+        if (userData.bookmarks?.includes(clubId)) {
+
+          await createNotification(
+            userDoc.id,
+            `New event from ${clubName}: ${title}`
+          );
+        }
       });
 
       alert("Event created successfully!");
@@ -34,7 +52,7 @@ export default function CreateEventForm({ clubName, onCreated }) {
       setDate("");
       setRegistrationLink("");
 
-      onCreated(); // refresh events list
+      onCreated();
     } catch (err) {
       console.error(err);
       alert("Failed to create event");

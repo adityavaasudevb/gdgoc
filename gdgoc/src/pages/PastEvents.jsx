@@ -11,9 +11,9 @@ export default function PastEvents() {
       const clubs = await getClubs();
 
       // Past events = not future
-      const pastEvents = events.filter(
-        (evt) => !isFutureEvent(evt.date)
-      );
+      const pastEvents = events.filter(evt => !isFutureEvent(evt.date))
+      .sort((a, b) => new Date(b.date) - new Date(a.date));
+
 
       // Group by club
       const grouped = {};

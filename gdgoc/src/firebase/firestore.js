@@ -8,15 +8,12 @@ import {
   arrayRemove,
   getDoc,
   setDoc,
-  collection,
   addDoc,
   query,
   where,
   orderBy
 } from "firebase/firestore";
 import app from "./firebaseConfig";
-
-
 
 const db = getFirestore(app);
 
@@ -45,6 +42,11 @@ export const registerForEvent = async (eventId, userEmail) => {
   });
 };
 
+export const addEvent = async (eventData) => {
+  const eventsRef = collection(db, "events");
+  await addDoc(eventsRef, eventData);
+};
+
 // -------------------- Bookmarks --------------------
 export const getUserBookmarks = async (uid) => {
   const userRef = doc(db, "users", uid);
@@ -65,17 +67,14 @@ export const toggleBookmark = async (uid, clubId, isBookmarked) => {
     { merge: true }
   );
 };
-export const addEvent = async (eventData) => {
-  const eventsRef = collection(db, "events");
-  await addDoc(eventsRef, eventData);
-};
+
+// -------------------- Clubs (Admin) --------------------
 export const updateClub = async (clubId, updatedData) => {
   const clubRef = doc(db, "clubs", clubId);
   await updateDoc(clubRef, updatedData);
 };
-// -------------------- Notifications --------------------
 
-// Create notification for a user
+// -------------------- Notifications --------------------
 export const createNotification = async (userId, message) => {
   await addDoc(collection(db, "notifications"), {
     userId,
@@ -85,7 +84,6 @@ export const createNotification = async (userId, message) => {
   });
 };
 
-// Get notifications for a user
 export const getUserNotifications = async (userId) => {
   const q = query(
     collection(db, "notifications"),
@@ -94,9 +92,9 @@ export const getUserNotifications = async (userId) => {
   );
 
   const snapshot = await getDocs(q);
-  return snapshot.docs.map(doc => ({
-    id: doc.id,
-    ...doc.data(),
+  return snapshot.docs.map(docSnap => ({
+    id: docSnap.id,
+    ...docSnap.data(),
   }));
 };
 

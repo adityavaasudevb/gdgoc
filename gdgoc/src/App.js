@@ -10,6 +10,7 @@ import { useAuth } from "./context/AuthContext";
 import Chatbot from "./pages/Chatbot";
 import ClubDetail from "./pages/ClubDetail";
 import PastEvents from "./pages/PastEvents.jsx";
+import Notifications from "./pages/Notifications";
 
 function AppRoutes() {
   const { user } = useAuth();
@@ -67,6 +68,7 @@ function AppRoutes() {
             </ProtectedRoute>
           }
         />
+        <Route path="/notifications" element={<Notifications />} />
 
       </Routes>
     </>
