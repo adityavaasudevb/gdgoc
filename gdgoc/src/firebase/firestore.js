@@ -8,9 +8,14 @@ import {
   arrayRemove,
   getDoc,
   setDoc,
+  collection,
+  addDoc,
+  query,
+  where,
+  orderBy
 } from "firebase/firestore";
 import app from "./firebaseConfig";
-import { addDoc } from "firebase/firestore";
+
 
 
 const db = getFirestore(app);
@@ -67,6 +72,32 @@ export const addEvent = async (eventData) => {
 export const updateClub = async (clubId, updatedData) => {
   const clubRef = doc(db, "clubs", clubId);
   await updateDoc(clubRef, updatedData);
+};
+// -------------------- Notifications --------------------
+
+// Create notification for a user
+export const createNotification = async (userId, message) => {
+  await addDoc(collection(db, "notifications"), {
+    userId,
+    message,
+    createdAt: new Date(),
+    read: false,
+  });
+};
+
+// Get notifications for a user
+export const getUserNotifications = async (userId) => {
+  const q = query(
+    collection(db, "notifications"),
+    where("userId", "==", userId),
+    orderBy("createdAt", "desc")
+  );
+
+  const snapshot = await getDocs(q);
+  return snapshot.docs.map(doc => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
 };
 
 export { db };
