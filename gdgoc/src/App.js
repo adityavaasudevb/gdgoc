@@ -7,6 +7,9 @@ import Navbar from "./components/Navbar";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { AuthProvider } from "./context/AuthContext";
 import { useAuth } from "./context/AuthContext";
+import Chatbot from "./pages/Chatbot";
+import ClubDetail from "./pages/ClubDetail";
+import PastEvents from "./pages/PastEvents.jsx";
 
 function AppRoutes() {
   const { user } = useAuth();
@@ -33,6 +36,14 @@ function AppRoutes() {
           }
         />
         <Route
+          path="/chatbot"
+          element={
+            <ProtectedRoute>
+              <Chatbot />
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path="/events"
           element={
             <ProtectedRoute>
@@ -40,6 +51,23 @@ function AppRoutes() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/clubs/:clubId"
+          element={
+            <ProtectedRoute>
+              <ClubDetail />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/past-events"
+          element={
+            <ProtectedRoute>
+              <PastEvents />
+            </ProtectedRoute>
+          }
+        />
+
       </Routes>
     </>
   );

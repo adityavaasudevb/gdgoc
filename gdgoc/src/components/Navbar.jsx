@@ -26,6 +26,9 @@ export default function Navbar() {
         <Link to="/dashboard">Dashboard</Link>
         <Link to="/clubs">Clubs</Link>
         <Link to="/events">Events</Link>
+        <Link to="/chatbot">Chatbot</Link>
+        <Link to="/past-events">Past Events</Link>
+
         <button onClick={handleLogout}>Logout</button>
       </div>
     </nav>

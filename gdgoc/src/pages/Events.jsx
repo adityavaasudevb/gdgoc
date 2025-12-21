@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { getEvents, registerForEvent } from "../firebase/firestore";
-import { useAuth } from "../context/AuthContext";
+import { getEvents } from "../firebase/firestore";
+import { isFutureEvent } from "../utils/dateUtils";
+import { getGoogleCalendarUrl } from "../utils/calendarUtils";
 
 export default function Events() {
   const [events, setEvents] = useState([]);
-  const { user } = useAuth();
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -14,21 +14,19 @@ export default function Events() {
     fetchEvents();
   }, []);
 
-  const handleRegister = async (event) => {
-    if (event.registrations?.includes(user.email)) {
-      alert("You are already registered for this event");
-      return;
-    }
-
-    await registerForEvent(event.id, user.email);
-    alert("Registered successfully!");
-  };
+  const upcomingEvents = events.filter(event =>
+    isFutureEvent(event.date)
+  );
 
   return (
     <div>
-      <h2>Events</h2>
+      <h2>Upcoming Events</h2>
 
-      {events.map(event => (
+      {upcomingEvents.length === 0 && (
+        <p>No upcoming events right now.</p>
+      )}
+
+      {upcomingEvents.map(event => (
         <div
           key={event.id}
           style={{
@@ -42,13 +40,27 @@ export default function Events() {
           <p>{event.description}</p>
           <small>{event.club} | {event.date}</small>
           <br /><br />
+
           <button
-            onClick={() => handleRegister(event)}
-            disabled={event.registrations?.includes(user.email)}
+            onClick={() => window.open(event.registrationLink, "_blank")}
           >
-            {event.registrations?.includes(user.email)
-              ? "Registered"
-              : "Register"}
+            Open Registration Form
+          </button>
+
+          <button
+            style={{ marginLeft: "10px" }}
+            onClick={() =>
+              window.open(
+                getGoogleCalendarUrl({
+                  title: event.title,
+                  description: event.description,
+                  date: event.date,
+                }),
+                "_blank"
+              )
+            }
+          >
+            Add to Google Calendar
           </button>
         </div>
       ))}
