@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login / Sign up • Club Chronicle</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+</head>
+<body>
+  <header class="navbar">
+    <div class="nav-left">
+      <ul class="nav-links">
+        <li><a href="index.html#home">Home</a></li>
+        <li><a href="index.html#about">About</a></li>
+        <li><a href="index.html#events">Events</a></li>
+        <li><a href="index.html#contact">Contact</a></li>
+      </ul>
+    </div>
+
+    <div class="logo-center">
+      <span class="logo-text">Club Chronicle</span>
+    </div>
+
+    <div class="nav-right">
+      <a href="auth.html" class="auth-link">Login</a>
+      <a href="auth.html" class="auth-btn">Sign up</a>
+      <button class="menu-toggle" id="menuToggle">☰</button>
+    </div>
+  </header>
+
+  <main class="auth-page-main">
+    <section class="auth-section">
+      <div class="auth-wrapper">
+        <div class="auth-card genz">
+          <div class="auth-header">
+            <h2>Club Chronicle</h2>
+            <p>Tap in. Find your people.</p>
+          </div>
+
+          <div class="auth-toggle-row">
+            <button class="auth-toggle-btn active" data-form="login-form">Login</button>
+            <button class="auth-toggle-btn" data-form="signup-form">Sign up</button>
+          </div>
+
+          <div class="auth-slider">
+            <!-- Login -->
+            <form class="auth-pane active-pane" id="login-form">
+              <h3>Back again, legend?</h3>
+              <p class="auth-subtitle">Pick up where you left off.</p>
+
+              <label class="auth-label">
+                College email
+                <input type="email" class="auth-input" placeholder="you@college.edu" required />
+              </label>
+
+              <label class="auth-label">
+                Password
+                <input type="password" class="auth-input" placeholder="••••••••" required />
+              </label>
+
+              <div class="auth-extra-row">
+                <label class="auth-check">
+                  <input type="checkbox" />
+                  <span>Keep me logged in</span>
+                </label>
+                <a href="#" class="auth-link-small">Forgot?</a>
+              </div>
+
+              <button type="submit" class="btn primary auth-submit">Enter the vibes</button>
+            </form>
+
+            <!-- Signup -->
+            <form class="auth-pane" id="signup-form">
+              <h3>New here? Let’s vibe.</h3>
+              <p class="auth-subtitle">Join clubs that match your chaos.</p>
+
+              <label class="auth-label">
+                Name
+                <input type="text" class="auth-input" placeholder="Your full name" required />
+              </label>
+
+              <label class="auth-label">
+                College email
+                <input type="email" class="auth-input" placeholder="you@college.edu" required />
+              </label>
+
+              <label class="auth-label">
+                Create password
+                <input type="password" class="auth-input" placeholder="Make it strong 👀" required />
+              </label>
+
+              <label class="auth-label">
+                Top interest
+                <input type="text" class="auth-input" placeholder="Music, coding, anime, sports…" />
+              </label>
+
+              <button type="submit" class="btn primary auth-submit">Create my club card</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
