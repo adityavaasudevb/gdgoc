@@ -6,6 +6,13 @@ import { useAuth } from "../context/AuthContext";
 import CreateEventForm from "../components/CreateEventForm";
 import EditClubForm from "../components/EditClubForm";
 
+/*
+  Club detail page:
+  - Shows club info
+  - Shows upcoming events (sorted by date)
+  - Shows admin controls ONLY to club admins
+*/
+
 export default function ClubDetail() {
   const { clubId } = useParams();
   const { user } = useAuth();
@@ -16,25 +23,22 @@ export default function ClubDetail() {
 
   useEffect(() => {
     const fetchData = async () => {
-      // 1️⃣ Fetch clubs
+      // 1️⃣ Fetch club
       const clubs = await getClubs();
       const foundClub = clubs.find(c => c.id === clubId);
-
       if (!foundClub) return;
 
       setClub(foundClub);
 
-      // 2️⃣ Admin check
+      // 2️⃣ Check admin access
       if (user && foundClub.adminEmails?.includes(user.email)) {
         setIsAdmin(true);
-      } else {
-        setIsAdmin(false);
       }
 
-      // 3️⃣ Fetch events
+      // 3️⃣ Fetch all events
       const allEvents = await getEvents();
 
-      // 4️⃣ Filter + SORT upcoming events
+      // 4️⃣ Filter + sort upcoming events (earliest first)
       const upcoming = allEvents
         .filter(
           e =>
@@ -49,17 +53,25 @@ export default function ClubDetail() {
     fetchData();
   }, [clubId, user]);
 
-  if (!club) {
-    return <p>Club not found.</p>;
-  }
+  if (!club) return <p>Club not found.</p>;
 
   return (
     <div style={{ maxWidth: "800px", margin: "20px auto" }}>
       <h2>{club.name}</h2>
+
+      {/* Club logo */}
+      {club.logoUrl && (
+        <img
+          src={club.logoUrl}
+          alt={club.name}
+          style={{ width: "120px", marginBottom: "10px" }}
+        />
+      )}
+
       <p><strong>Category:</strong> {club.category}</p>
       <p>{club.description}</p>
 
-      {/* 🔒 ADMIN CONTROLS */}
+      {/* 🔒 Admin-only controls */}
       {isAdmin && (
         <div
           style={{
@@ -89,9 +101,7 @@ export default function ClubDetail() {
 
       <h3>Upcoming Events</h3>
 
-      {events.length === 0 && (
-        <p>No upcoming events for this club.</p>
-      )}
+      {events.length === 0 && <p>No upcoming events for this club.</p>}
 
       {events.map(event => (
         <div

@@ -3,12 +3,19 @@ import { getClubs, getUserBookmarks, toggleBookmark } from "../firebase/firestor
 import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router-dom";
 
+/*
+  Public page:
+  - Lists all clubs
+  - Shows logo + description
+  - Allows logged-in users to bookmark clubs
+*/
+
 export default function Clubs() {
   const [clubs, setClubs] = useState([]);
   const [bookmarks, setBookmarks] = useState([]);
   const { user } = useAuth();
 
-  // Fetch clubs
+  // Fetch all clubs from Firestore
   useEffect(() => {
     const fetchClubs = async () => {
       const data = await getClubs();
@@ -17,7 +24,7 @@ export default function Clubs() {
     fetchClubs();
   }, []);
 
-  // Fetch user's bookmarks (ONLY when user exists)
+  // Fetch logged-in user's bookmarks
   useEffect(() => {
     if (!user) return;
 
@@ -29,7 +36,7 @@ export default function Clubs() {
     fetchBookmarks();
   }, [user]);
 
-  // Toggle bookmark using club.id (NOT name)
+  // Add or remove bookmark (clubId-based)
   const handleBookmark = async (clubId) => {
     const isBookmarked = bookmarks.includes(clubId);
 
@@ -45,7 +52,6 @@ export default function Clubs() {
   return (
     <div>
       <h2>Clubs</h2>
-      {clubs.length === 0 && <p>No clubs found</p>}
 
       {clubs.map((club) => (
         <div
@@ -57,6 +63,21 @@ export default function Clubs() {
             borderRadius: "8px",
           }}
         >
+          {/* Club logo (if uploaded) */}
+          {club.logoUrl && (
+            <img
+              src={club.logoUrl}
+              alt={club.name}
+              style={{
+                width: "60px",
+                height: "60px",
+                objectFit: "cover",
+                borderRadius: "6px",
+              }}
+            />
+          )}
+
+          {/* Navigate to club detail page */}
           <h3>
             <Link to={`/clubs/${club.id}`}>{club.name}</Link>
           </h3>
@@ -65,9 +86,12 @@ export default function Clubs() {
           <small>{club.category}</small>
           <br /><br />
 
-          <button onClick={() => handleBookmark(club.id)}>
-            {bookmarks.includes(club.id) ? "Bookmarked ⭐" : "Bookmark"}
-          </button>
+          {/* Bookmark toggle */}
+          {user && (
+            <button onClick={() => handleBookmark(club.id)}>
+              {bookmarks.includes(club.id) ? "Bookmarked ⭐" : "Bookmark"}
+            </button>
+          )}
         </div>
       ))}
     </div>

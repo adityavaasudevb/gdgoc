@@ -74,6 +74,12 @@ export const updateClub = async (clubId, updatedData) => {
   await updateDoc(clubRef, updatedData);
 };
 
+export const updateClubLogo = async (clubId, logoUrl) => {
+  const clubRef = doc(db, "clubs", clubId);
+  await updateDoc(clubRef, { logoUrl });
+};
+
+
 // -------------------- Notifications --------------------
 export const createNotification = async (userId, message) => {
   await addDoc(collection(db, "notifications"), {
