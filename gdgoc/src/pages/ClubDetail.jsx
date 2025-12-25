@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getClubs, getEvents } from "../firebase/firestore";
+import { getClubs, getEvents, deleteEvent } from "../firebase/firestore";
+import { deleteEventImage } from "../firebase/storage";
 import { isFutureEvent } from "../utils/dateUtils";
 import { useAuth } from "../context/AuthContext";
 import CreateEventForm from "../components/CreateEventForm";
@@ -11,6 +12,7 @@ import EditClubForm from "../components/EditClubForm";
   - Shows club info
   - Shows upcoming events (sorted by date)
   - Shows admin controls ONLY to club admins
+  - Allows admins to DELETE events
 */
 
 export default function ClubDetail() {
@@ -30,7 +32,7 @@ export default function ClubDetail() {
 
       setClub(foundClub);
 
-      // 2️⃣ Check admin access
+      // 2️⃣ Admin check
       if (user && foundClub.adminEmails?.includes(user.email)) {
         setIsAdmin(true);
       }
@@ -38,7 +40,7 @@ export default function ClubDetail() {
       // 3️⃣ Fetch all events
       const allEvents = await getEvents();
 
-      // 4️⃣ Filter + sort upcoming events (earliest first)
+      // 4️⃣ Filter + sort upcoming events
       const upcoming = allEvents
         .filter(
           e =>
@@ -52,6 +54,35 @@ export default function ClubDetail() {
 
     fetchData();
   }, [clubId, user]);
+
+  // 🗑️ Delete event (admin only)
+  const handleDeleteEvent = async (eventId) => {
+  const confirmDelete = window.confirm(
+    "Are you sure you want to delete this event?"
+  );
+
+  if (!confirmDelete) return;
+
+  try {
+    // 🔐 Try deleting image (may not exist)
+    try {
+      await deleteEventImage(eventId);
+    } catch (err) {
+      // Image not found → safe to ignore
+      console.warn("No event image to delete");
+    }
+
+    // ✅ Always delete Firestore event
+    await deleteEvent(eventId);
+
+    alert("Event deleted successfully");
+    window.location.reload();
+  } catch (err) {
+    console.error(err);
+    alert("Failed to delete event");
+  }
+};
+
 
   if (!club) return <p>Club not found.</p>;
 
@@ -103,25 +134,71 @@ export default function ClubDetail() {
 
       {events.length === 0 && <p>No upcoming events for this club.</p>}
 
-      {events.map(event => (
-        <div
-          key={event.id}
-          style={{
-            border: "1px solid #ddd",
-            padding: "12px",
-            margin: "10px 0",
-            borderRadius: "8px",
-          }}
-        >
-          <h4>{event.title}</h4>
-          <p>{event.description}</p>
-          <small>{event.date}</small>
-          <br /><br />
-          <button onClick={() => window.open(event.registrationLink, "_blank")}>
-            Register
-          </button>
-        </div>
-      ))}
+      {events.map(event => {
+        const prettyDate = new Date(event.date)
+          .toLocaleDateString("en-GB", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+          })
+          .replace(/ /g, " · ");
+
+        return (
+          <div
+            key={event.id}
+            style={{
+              border: "1px solid #ddd",
+              padding: "12px",
+              margin: "10px 0",
+              borderRadius: "8px",
+            }}
+          >
+            {/* Event image */}
+            {event.imageUrl && (
+              <img
+                src={event.imageUrl}
+                alt={event.title}
+                style={{
+                  width: "100%",
+                  maxHeight: "200px",
+                  objectFit: "cover",
+                  borderRadius: "6px",
+                  marginBottom: "8px",
+                }}
+              />
+            )}
+
+            <h4>{event.title}</h4>
+            <p>{event.description}</p>
+            <small>{prettyDate}</small>
+            <br /><br />
+
+            <button
+              onClick={() => window.open(event.registrationLink, "_blank")}
+            >
+              Register
+            </button>
+
+            {/* 🗑️ Delete button (admin only) */}
+            {isAdmin && (
+              <>
+                <br />
+                <button
+                  onClick={() => handleDeleteEvent(event.id)}
+                  style={{
+                    marginTop: "8px",
+                    background: "#ffe5e5",
+                    border: "1px solid #ff4d4d",
+                    color: "#b30000",
+                  }}
+                >
+                  Delete Event
+                </button>
+              </>
+            )}
+          </div>
+        );
+      })}
     </div>
   );
 }

@@ -2,6 +2,13 @@ import { useEffect, useState } from "react";
 import { getEvents, getClubs } from "../firebase/firestore";
 import { isFutureEvent } from "../utils/dateUtils";
 
+/*
+  PastEvents page:
+  - Shows only past events
+  - Groups them by club
+  - Sorts by most recent first
+*/
+
 export default function PastEvents() {
   const [groupedEvents, setGroupedEvents] = useState({});
 
@@ -10,17 +17,18 @@ export default function PastEvents() {
       const events = await getEvents();
       const clubs = await getClubs();
 
-      // Past events = not future
-      const pastEvents = events.filter(evt => !isFutureEvent(evt.date))
-      .sort((a, b) => new Date(b.date) - new Date(a.date));
+      // 1️⃣ Filter past events & sort (latest first)
+      const pastEvents = events
+        .filter(evt => !isFutureEvent(evt.date))
+        .sort((a, b) => new Date(b.date) - new Date(a.date));
 
-
-      // Group by club
+      // 2️⃣ Prepare empty club groups
       const grouped = {};
       clubs.forEach((club) => {
         grouped[club.name] = [];
       });
 
+      // 3️⃣ Group events under club names
       pastEvents.forEach((evt) => {
         if (!grouped[evt.club]) {
           grouped[evt.club] = [];
@@ -48,17 +56,14 @@ export default function PastEvents() {
             <h3>{clubName}</h3>
 
             {events.map((evt) => {
-              const formattedDate = new Date(evt.date).toLocaleDateString(
-                "en-GB",
-                {
+              // Format date → "05 · Dec · 2025"
+              const prettyDate = new Date(evt.date)
+                .toLocaleDateString("en-GB", {
                   day: "2-digit",
                   month: "short",
                   year: "numeric",
-                }
-              );
-
-              // Convert "05 Dec 2025" → "05 · Dec · 2025"
-              const prettyDate = formattedDate.replace(/ /g, " · ");
+                })
+                .replace(/ /g, " · ");
 
               return (
                 <div
@@ -70,6 +75,21 @@ export default function PastEvents() {
                     borderRadius: "6px",
                   }}
                 >
+                  {/* Event image (if exists) */}
+                  {evt.imageUrl && (
+                    <img
+                      src={evt.imageUrl}
+                      alt={evt.title}
+                      style={{
+                        width: "100%",
+                        maxHeight: "200px",
+                        objectFit: "cover",
+                        borderRadius: "6px",
+                        marginBottom: "8px",
+                      }}
+                    />
+                  )}
+
                   <strong>{evt.title}</strong>
                   <p>{evt.description}</p>
                   <small>{prettyDate}</small>

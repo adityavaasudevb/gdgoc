@@ -27,6 +27,20 @@ export default function Events() {
 
       {events.map(event => (
         <div key={event.id} style={{ border: "1px solid #ddd", padding: 12, margin: "12px 0", borderRadius: 8 }}>
+          {event.imageUrl && (
+            <img
+              src={event.imageUrl}
+              alt={event.title}
+              style={{
+                width: "100%",
+                maxHeight: "200px",
+                objectFit: "cover",
+                borderRadius: "6px",
+                marginBottom: "8px",
+              }}
+            />
+          )}
+
           <h3>{event.title}</h3>
           <p>{event.description}</p>
           <small>{event.club} | {event.date}</small>

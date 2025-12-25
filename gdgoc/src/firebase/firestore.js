@@ -9,6 +9,7 @@ import {
   getDoc,
   setDoc,
   addDoc,
+  deleteDoc,
   query,
   where,
   orderBy
@@ -44,8 +45,10 @@ export const registerForEvent = async (eventId, userEmail) => {
 
 export const addEvent = async (eventData) => {
   const eventsRef = collection(db, "events");
-  await addDoc(eventsRef, eventData);
+  const docRef = await addDoc(eventsRef, eventData);
+  return docRef; // 🔑 IMPORTANT
 };
+
 
 // -------------------- Bookmarks --------------------
 export const getUserBookmarks = async (uid) => {
@@ -102,6 +105,17 @@ export const getUserNotifications = async (userId) => {
     id: docSnap.id,
     ...docSnap.data(),
   }));
+};
+
+// Save event image URL
+export const updateEventImage = async (eventId, imageUrl) => {
+  const eventRef = doc(db, "events", eventId);
+  await updateDoc(eventRef, { imageUrl });
+};
+// Delete event document
+export const deleteEvent = async (eventId) => {
+  const eventRef = doc(db, "events", eventId);
+  await deleteDoc(eventRef);
 };
 
 export { db };
