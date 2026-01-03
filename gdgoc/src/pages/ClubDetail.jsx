@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { getClubs, getEvents, deleteEvent } from "../firebase/firestore";
 import { deleteEventImage } from "../firebase/storage";
 import { isFutureEvent } from "../utils/dateUtils";
+import { getGoogleCalendarUrl } from "../utils/calendarUtils"; // ✅ ADD THIS
 import { useAuth } from "../context/AuthContext";
 import CreateEventForm from "../components/CreateEventForm";
 import EditClubForm from "../components/EditClubForm";
@@ -57,32 +58,27 @@ export default function ClubDetail() {
 
   // 🗑️ Delete event (admin only)
   const handleDeleteEvent = async (eventId) => {
-  const confirmDelete = window.confirm(
-    "Are you sure you want to delete this event?"
-  );
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this event?"
+    );
 
-  if (!confirmDelete) return;
+    if (!confirmDelete) return;
 
-  try {
-    // 🔐 Try deleting image (may not exist)
     try {
-      await deleteEventImage(eventId);
+      try {
+        await deleteEventImage(eventId);
+      } catch {
+        console.warn("No event image to delete");
+      }
+
+      await deleteEvent(eventId);
+      alert("Event deleted successfully");
+      window.location.reload();
     } catch (err) {
-      // Image not found → safe to ignore
-      console.warn("No event image to delete");
+      console.error(err);
+      alert("Failed to delete event");
     }
-
-    // ✅ Always delete Firestore event
-    await deleteEvent(eventId);
-
-    alert("Event deleted successfully");
-    window.location.reload();
-  } catch (err) {
-    console.error(err);
-    alert("Failed to delete event");
-  }
-};
-
+  };
 
   if (!club) return <p>Club not found.</p>;
 
@@ -90,7 +86,6 @@ export default function ClubDetail() {
     <div style={{ maxWidth: "800px", margin: "20px auto" }}>
       <h2>{club.name}</h2>
 
-      {/* Club logo */}
       {club.logoUrl && (
         <img
           src={club.logoUrl}
@@ -153,7 +148,6 @@ export default function ClubDetail() {
               borderRadius: "8px",
             }}
           >
-            {/* Event image */}
             {event.imageUrl && (
               <img
                 src={event.imageUrl}
@@ -173,13 +167,24 @@ export default function ClubDetail() {
             <small>{prettyDate}</small>
             <br /><br />
 
+            {/* Register */}
             <button
               onClick={() => window.open(event.registrationLink, "_blank")}
             >
               Register
             </button>
 
-            {/* 🗑️ Delete button (admin only) */}
+            {/* 📅 Save to Calendar */}
+            <button
+              style={{ marginLeft: "8px" }}
+              onClick={() =>
+                window.open(getGoogleCalendarUrl(event), "_blank")
+              }
+            >
+              Save to Calendar
+            </button>
+
+            {/* 🗑️ Delete (admin only) */}
             {isAdmin && (
               <>
                 <br />

@@ -7,19 +7,29 @@ import Navbar from "./components/Navbar";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { AuthProvider } from "./context/AuthContext";
 import { useAuth } from "./context/AuthContext";
-import Chatbot from "./pages/Chatbot";
 import ClubDetail from "./pages/ClubDetail";
 import PastEvents from "./pages/PastEvents.jsx";
 import Notifications from "./pages/Notifications";
+import ChatWidget from "./components/ChatWidget"; // ✅ import
 
+/*
+  AppRoutes:
+  - Handles routing
+  - Shows Navbar only when user is logged in
+  - Mounts ChatWidget globally (important)
+*/
 function AppRoutes() {
   const { user } = useAuth();
 
   return (
     <>
+      {/* Show navbar only after login */}
       {user && <Navbar />}
+
+      {/* Main app routes */}
       <Routes>
         <Route path="/" element={<Login />} />
+
         <Route
           path="/dashboard"
           element={
@@ -28,6 +38,7 @@ function AppRoutes() {
             </ProtectedRoute>
           }
         />
+
         <Route
           path="/clubs"
           element={
@@ -36,14 +47,7 @@ function AppRoutes() {
             </ProtectedRoute>
           }
         />
-        <Route
-          path="/chatbot"
-          element={
-            <ProtectedRoute>
-              <Chatbot />
-            </ProtectedRoute>
-          }
-        />
+
         <Route
           path="/events"
           element={
@@ -52,6 +56,7 @@ function AppRoutes() {
             </ProtectedRoute>
           }
         />
+
         <Route
           path="/clubs/:clubId"
           element={
@@ -60,6 +65,7 @@ function AppRoutes() {
             </ProtectedRoute>
           }
         />
+
         <Route
           path="/past-events"
           element={
@@ -68,9 +74,20 @@ function AppRoutes() {
             </ProtectedRoute>
           }
         />
-        <Route path="/notifications" element={<Notifications />} />
 
+        <Route
+          path="/notifications"
+          element={
+            <ProtectedRoute>
+              <Notifications />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
+
+      {/* 🤖 Floating Gemini Chat Assistant (only after login) */}
+{user && <ChatWidget />}
+
     </>
   );
 }

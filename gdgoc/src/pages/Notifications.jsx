@@ -1,6 +1,15 @@
 import { useEffect, useState } from "react";
-import { getUserNotifications } from "../firebase/firestore";
+import {
+  getUserNotifications,
+  markNotificationsAsRead,
+} from "../firebase/firestore";
 import { useAuth } from "../context/AuthContext";
+
+/*
+  Notifications page
+  - Shows all notifications
+  - Marks them as READ when page is opened
+*/
 
 export default function Notifications() {
   const { user } = useAuth();
@@ -9,12 +18,16 @@ export default function Notifications() {
   useEffect(() => {
     if (!user) return;
 
-    const fetchNotifications = async () => {
+    const fetchAndMark = async () => {
+      // 1️⃣ Fetch notifications
       const data = await getUserNotifications(user.uid);
       setNotifications(data);
+
+      // 2️⃣ Mark all unread notifications as read
+      await markNotificationsAsRead(user.uid);
     };
 
-    fetchNotifications();
+    fetchAndMark();
   }, [user]);
 
   return (
@@ -25,7 +38,7 @@ export default function Notifications() {
         <p>No notifications yet.</p>
       )}
 
-      {notifications.map(n => (
+      {notifications.map((n) => (
         <div
           key={n.id}
           style={{
@@ -38,7 +51,9 @@ export default function Notifications() {
         >
           <p>{n.message}</p>
           <small>
-            {new Date(n.createdAt.seconds * 1000).toLocaleString()}
+            {n.createdAt?.seconds
+              ? new Date(n.createdAt.seconds * 1000).toLocaleString()
+              : ""}
           </small>
         </div>
       ))}

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getEvents } from "../firebase/firestore";
 import { isFutureEvent } from "../utils/dateUtils";
+import { getGoogleCalendarUrl } from "../utils/calendarUtils"; // ✅ ADD THIS
 
 export default function Events() {
   const [events, setEvents] = useState([]);
@@ -26,7 +27,15 @@ export default function Events() {
       {events.length === 0 && <p>No upcoming events right now.</p>}
 
       {events.map(event => (
-        <div key={event.id} style={{ border: "1px solid #ddd", padding: 12, margin: "12px 0", borderRadius: 8 }}>
+        <div
+          key={event.id}
+          style={{
+            border: "1px solid #ddd",
+            padding: 12,
+            margin: "12px 0",
+            borderRadius: 8,
+          }}
+        >
           {event.imageUrl && (
             <img
               src={event.imageUrl}
@@ -45,8 +54,20 @@ export default function Events() {
           <p>{event.description}</p>
           <small>{event.club} | {event.date}</small>
           <br /><br />
+
+          {/* Registration */}
           <button onClick={() => window.open(event.registrationLink, "_blank")}>
             Open Registration Form
+          </button>
+
+          {/* 📅 Save to Calendar */}
+          <button
+            style={{ marginLeft: "8px" }}
+            onClick={() =>
+              window.open(getGoogleCalendarUrl(event), "_blank")
+            }
+          >
+            Save to Calendar
           </button>
         </div>
       ))}

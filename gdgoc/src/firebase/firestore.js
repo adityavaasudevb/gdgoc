@@ -118,4 +118,33 @@ export const deleteEvent = async (eventId) => {
   await deleteDoc(eventRef);
 };
 
+export const getUnreadNotificationCount = async (userId) => {
+  const q = query(
+    collection(db, "notifications"),
+    where("userId", "==", userId),
+    where("read", "==", false)
+  );
+
+  const snapshot = await getDocs(q);
+  return snapshot.size;
+};
+// -------------------- Mark notifications as read --------------------
+// 🔔 Mark all notifications as read for a user
+export const markNotificationsAsRead = async (userId) => {
+  const q = query(
+    collection(db, "notifications"),
+    where("userId", "==", userId),
+    where("read", "==", false)
+  );
+
+  const snapshot = await getDocs(q);
+
+  snapshot.docs.forEach(async (docSnap) => {
+    await updateDoc(doc(db, "notifications", docSnap.id), {
+      read: true,
+    });
+  });
+};
+
+
 export { db };
