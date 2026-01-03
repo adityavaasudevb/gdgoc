@@ -12,6 +12,7 @@ import PastEvents from "./pages/PastEvents.jsx";
 import Notifications from "./pages/Notifications";
 import ChatWidget from "./components/ChatWidget"; // ✅ import
 
+
 /*
   AppRoutes:
   - Handles routing
