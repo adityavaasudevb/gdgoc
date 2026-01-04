@@ -1,0 +1,189 @@
+/* ================= CLUBS LIST PAGE (DASHBOARD THEME) ================= */
+
+.clubs-page {
+  min-height: 100vh;
+  background: linear-gradient(
+    135deg,
+    #0c0c0c 0%,
+    #1a1a1a 50%,
+    #242424 100%
+  );
+  padding: 3rem 1.5rem 5rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: #ffffff;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Ambient glow */
+.clubs-page::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(circle at top right, rgba(255,149,0,0.25), transparent 60%),
+    radial-gradient(circle at bottom left, rgba(255,255,255,0.08), transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.clubs-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+/* ================= PAGE TITLE ================= */
+
+.clubs-title {
+  font-size: clamp(2.4rem, 6vw, 3.6rem);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  margin-bottom: 3rem;
+  color: #ffffff;
+}
+
+/* ================= GRID (VERTICAL CARDS) ================= */
+
+.clubs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2.4rem;
+}
+
+/* ================= CLUB CARD ================= */
+
+.club-card {
+  background: rgba(255,255,255,0.03);
+  backdrop-filter: blur(18px);
+  border-radius: 22px;
+  padding: 2rem 1.8rem 2.2rem;
+  border: 1px solid rgba(255,255,255,0.08);
+  transition:
+    transform 0.4s ease,
+    box-shadow 0.4s ease,
+    border-color 0.4s ease;
+  position: relative;
+  text-align: center;
+}
+
+/* Surface highlight */
+.club-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    180deg,
+    rgba(255,255,255,0.08),
+    transparent 65%
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.club-card:hover::before {
+  opacity: 1;
+}
+
+.club-card:hover {
+  transform: translateY(-14px);
+  border-color: rgba(255,149,0,0.5);
+  box-shadow:
+    0 28px 60px rgba(0,0,0,0.85),
+    0 0 0 1px rgba(255,149,0,0.35);
+}
+
+/* ================= CLUB LOGO ================= */
+
+.club-logo {
+  width: 72px;
+  height: 72px;
+  object-fit: cover;
+  border-radius: 18px;
+  margin: 0 auto 1.2rem;
+  display: block;
+}
+
+/* ================= CLUB NAME ================= */
+
+.club-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.6rem;
+  color: #ffffff;
+}
+
+.club-name a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.club-name a:hover {
+  text-decoration: underline;
+}
+
+/* ================= CLUB CONTENT ================= */
+
+.club-description {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  opacity: 0.9;
+  margin-bottom: 0.8rem;
+}
+
+.club-category {
+  font-size: 0.85rem;
+  opacity: 0.7;
+  margin-bottom: 1.6rem;
+}
+
+/* ================= ACTIONS ================= */
+
+.club-actions {
+  display: flex;
+  justify-content: center;
+}
+
+/* ================= BUTTON ================= */
+
+.club-btn {
+  padding: 0.85rem 2.2rem;
+  border-radius: 35px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+/* DEFAULT ORANGE */
+.club-btn-primary {
+  background: linear-gradient(135deg, #ff9500, #ffb347);
+  color: #000;
+  box-shadow: 0 10px 30px rgba(255,149,0,0.45);
+}
+
+.club-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 40px rgba(255,149,0,0.65);
+}
+
+/* BOOKMARKED STATE */
+.club-btn-bookmarked {
+  background: rgba(255,255,255,0.06);
+  color: #ffffff;
+  border: 2px solid #ff9500;
+  box-shadow: none;
+}
+
+.club-btn-bookmarked:hover {
+  background: rgba(255,255,255,0.12);
+  transform: translateY(-2px);
+}

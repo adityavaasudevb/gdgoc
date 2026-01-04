@@ -1,0 +1,133 @@
+/* PAGE */
+.past-page {
+  min-height: 100vh;
+  background: radial-gradient(circle at top, #031a3a, #020617);
+  padding: 3rem 2rem;
+  color: #ffffff;
+}
+
+.past-container {
+  max-width: 1400px;
+  margin: auto;
+}
+
+/* ================= PAGE TITLE ================= */
+
+.past-title {
+  font-family: "Poppins", sans-serif;
+  font-size: 1.2rem;            /* reduced size */
+  font-weight: 800;
+  text-transform: uppercase;    /* ALL CAPS */
+  letter-spacing: 0.12em;
+  margin-bottom: 3rem;
+
+  background: linear-gradient(
+    90deg,
+    #60a5fa,
+    #3b82f6,
+    #1d4ed8
+  );
+  -webkit-background-clip: text;
+ 
+  -webkit-text-fill-color: transparent;
+}
+
+
+/* CLUB */
+.past-club {
+  margin-bottom: 4rem;
+}
+
+.club-name {
+  font-family: "Anton", sans-serif;
+  font-size: clamp(2.2rem, 4.5vw, 3.4rem);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: 1;
+  margin-bottom: 1.6rem;
+
+  background: linear-gradient(135deg, #60a5fa, #3b82f6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+
+
+/* 🔥 REAL GRID: 3 CARDS SIDE BY SIDE */
+.event-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 2.5rem;
+}
+
+/* Responsive */
+@media (max-width: 1100px) {
+  .event-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 700px) {
+  .event-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* CARD */
+.event-info h4 {
+  font-family: "Poppins", sans-serif;
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.event-card:hover {
+  transform: translateY(-14px);
+  box-shadow: 0 40px 90px rgba(0,0,0,0.85);
+}
+
+/* IMAGE */
+.event-image-wrapper {
+  background: #000;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.event-image {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
+/* TEXT */
+.event-info h4 {
+  font-size: 1.4rem;
+}
+
+.event-summary {
+  font-family: "Poppins", sans-serif;
+  font-size: 0.95rem;
+  color: #c7d2fe;
+  opacity: 0.95;
+}
+
+
+.event-rating {
+  color: #facc15;
+}
+
+/* HIDDEN DESCRIPTION */
+.event-description {
+  font-family: "Poppins", sans-serif;
+  font-size: 0.9rem;
+  color: #e0e7ff;
+  line-height: 1.6;
+}
+
+
+/* SHOW ON HOVER */
+.event-card:hover .event-description {
+  opacity: 1;
+  max-height: 220px;
+}

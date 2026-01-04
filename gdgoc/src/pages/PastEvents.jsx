@@ -1,104 +1,82 @@
 import { useEffect, useState } from "react";
-import { getEvents, getClubs } from "../firebase/firestore";
+import { getEvents } from "../firebase/firestore";
 import { isFutureEvent } from "../utils/dateUtils";
-
-/*
-  PastEvents page:
-  - Shows only past events
-  - Groups them by club
-  - Sorts by most recent first
-*/
+import "./PastEvents.css";
 
 export default function PastEvents() {
   const [groupedEvents, setGroupedEvents] = useState({});
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       const events = await getEvents();
-      const clubs = await getClubs();
 
-      // 1️⃣ Filter past events & sort (latest first)
       const pastEvents = events
-        .filter(evt => !isFutureEvent(evt.date))
+        .filter(e => e.date && !isFutureEvent(e.date))
         .sort((a, b) => new Date(b.date) - new Date(a.date));
 
-      // 2️⃣ Prepare empty club groups
       const grouped = {};
-      clubs.forEach((club) => {
-        grouped[club.name] = [];
-      });
-
-      // 3️⃣ Group events under club names
-      pastEvents.forEach((evt) => {
-        if (!grouped[evt.club]) {
-          grouped[evt.club] = [];
-        }
+      pastEvents.forEach(evt => {
+        if (!grouped[evt.club]) grouped[evt.club] = [];
         grouped[evt.club].push(evt);
       });
 
       setGroupedEvents(grouped);
+      setLoading(false);
     };
 
     fetchData();
   }, []);
 
+  if (loading) {
+    return <div className="past-page">Loading past events…</div>;
+  }
+
   return (
-    <div style={{ maxWidth: "800px", margin: "20px auto" }}>
-      <h2>Past Events</h2>
+    <div className="past-page">
+      <div className="past-container">
+        <h2 className="past-title">Past Events</h2>
 
-      {Object.keys(groupedEvents).length === 0 && (
-        <p>No past events available.</p>
-      )}
+        {Object.entries(groupedEvents).map(([club, events]) => (
+          <section key={club} className="past-club">
+            <h3 className="club-name">{club}</h3>
 
-      {Object.entries(groupedEvents).map(([clubName, events]) =>
-        events.length > 0 ? (
-          <div key={clubName} style={{ marginBottom: "20px" }}>
-            <h3>{clubName}</h3>
+            {/* 🔴 FORCE GRID HERE */}
+            <div className="event-grid">
+              {events.map(evt => (
+                <div key={evt.id} className="event-card">
 
-            {events.map((evt) => {
-              // Format date → "05 · Dec · 2025"
-              const prettyDate = new Date(evt.date)
-                .toLocaleDateString("en-GB", {
-                  day: "2-digit",
-                  month: "short",
-                  year: "numeric",
-                })
-                .replace(/ /g, " · ");
-
-              return (
-                <div
-                  key={evt.id}
-                  style={{
-                    border: "1px solid #ddd",
-                    padding: "10px",
-                    margin: "8px 0",
-                    borderRadius: "6px",
-                  }}
-                >
-                  {/* Event image (if exists) */}
                   {evt.imageUrl && (
-                    <img
-                      src={evt.imageUrl}
-                      alt={evt.title}
-                      style={{
-                        width: "100%",
-                        maxHeight: "200px",
-                        objectFit: "cover",
-                        borderRadius: "6px",
-                        marginBottom: "8px",
-                      }}
-                    />
+                    <div className="event-image-wrapper">
+                      <img
+                        src={evt.imageUrl}
+                        alt={evt.title}
+                        className="event-image"
+                      />
+                    </div>
                   )}
 
-                  <strong>{evt.title}</strong>
-                  <p>{evt.description}</p>
-                  <small>{prettyDate}</small>
+                  <div className="event-info">
+                    <h4>{evt.title}</h4>
+
+                    <p className="event-summary">
+                      {evt.experience || "A memorable campus experience"}
+                    </p>
+
+                    <div className="event-rating">⭐⭐⭐⭐☆</div>
+
+                    <p className="event-description">
+                      {evt.description ||
+                        "This event brought together students, creativity, and collaboration in a memorable way."}
+                    </p>
+                  </div>
+
                 </div>
-              );
-            })}
-          </div>
-        ) : null
-      )}
+              ))}
+            </div>
+          </section>
+        ))}
+      </div>
     </div>
   );
 }

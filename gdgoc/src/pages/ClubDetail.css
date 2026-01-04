@@ -1,0 +1,227 @@
+/* ================= CLUB DETAIL (DASHBOARD THEME) ================= */
+
+
+.page-root {
+  min-height: 100vh;
+  background: linear-gradient(
+    135deg,
+    #0c0c0c 0%,
+    #1a1a1a 50%,
+    #242424 100%
+  );
+  position: relative;
+  overflow-x: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: #ffffff;
+}
+
+/* Ambient dashboard-style glow */
+.page-root::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(circle at top right, rgba(255,149,0,0.25), transparent 60%),
+    radial-gradient(circle at bottom left, rgba(255,255,255,0.08), transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.club-page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 4rem 2rem 6rem;
+  position: relative;
+  z-index: 2;
+}
+
+/* ================= HEADER (SMOOTH ENTRANCE) ================= */
+
+.header {
+  margin-bottom: 3.5rem;
+  padding-bottom: 2.2rem;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+
+  opacity: 0;
+  transform: translateY(-30px);
+  animation: headerFade 0.9s ease forwards;
+}
+
+@keyframes headerFade {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.club-title {
+  font-size: clamp(2.3rem, 6vw, 3.6rem);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  line-height: 0.95;
+  margin-bottom: 1rem;
+  color: #ffffff;
+}
+
+.club-meta {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  max-width: 720px;
+  opacity: 0.9;
+  color: #ffffff;
+}
+
+/* ================= SECTION TITLE ================= */
+
+.section-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin: 3.5rem 0 2.5rem;
+  text-align: left;
+  color: #ffffff;
+  position: relative;
+}
+
+.section-title::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -12px;
+  width: 90px;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    #ff9500,
+    #ffb347
+  );
+  border-radius: 3px;
+}
+
+/* ================= ADMIN BOX ================= */
+
+.admin-box {
+  margin-top: 2.5rem;
+  padding: 2rem;
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(16px);
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.15);
+}
+
+/* ================= FADE-IN ON SCROLL ================= */
+
+.fade-in {
+  opacity: 0;
+  transform: translateY(40px);
+  transition:
+    opacity 0.9s ease,
+    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.fade-in.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ================= EVENT CARD ================= */
+
+.event-card {
+  background: rgba(255,255,255,0.03);
+  backdrop-filter: blur(18px);
+  border-radius: 22px;
+  padding: 2rem;
+  margin-bottom: 2.8rem;
+  border: 1px solid rgba(255,255,255,0.08);
+  position: relative;
+  transition:
+    transform 0.4s ease,
+    box-shadow 0.4s ease,
+    border-color 0.4s ease;
+}
+
+/* subtle surface shine */
+.event-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    180deg,
+    rgba(255,255,255,0.08),
+    transparent 65%
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.event-card:hover::before {
+  opacity: 1;
+}
+
+.event-card:hover {
+  transform: translateY(-14px);
+  border-color: rgba(255,149,0,0.5);
+  box-shadow:
+    0 28px 60px rgba(0,0,0,0.85),
+    0 0 0 1px rgba(255,149,0,0.35);
+}
+
+/* ================= EVENT IMAGE ================= */
+
+.event-image-wrapper {
+  overflow: hidden;
+  border-radius: 18px;
+  margin-bottom: 1.5rem;
+}
+
+.event-image {
+  width: 100%;
+  height: 240px;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.event-card:hover .event-image {
+  transform: scale(1.12);
+}
+
+/* ================= BUTTONS ================= */
+
+.btn {
+  padding: 1.05rem 2.6rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 35px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-family: inherit;
+  margin-right: 1rem;
+}
+
+/* ORANGE DASHBOARD BUTTON */
+.btn-primary {
+  background: linear-gradient(135deg, #ff9500, #ffb347);
+  box-shadow: 0 10px 30px rgba(255,149,0,0.45);
+  color: #000;
+}
+
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 18px 45px rgba(255,149,0,0.65);
+}
+
+/* DELETE BUTTON */
+.btn-danger {
+  background: transparent;
+  color: #ff5c5c;
+  border: 1px solid #ff5c5c;
+}
+
+.btn-danger:hover {
+  background: rgba(255,92,92,0.15);
+}
