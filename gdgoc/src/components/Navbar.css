@@ -1,113 +1,136 @@
-.club-navbar {
-  width: 100vw;
-  margin: 0;
-  padding: 10px 40px;
+/* ================= NAVBAR (CLUBS THEME) ================= */
 
-  background-color: #1a1a1a;
+.club-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+
   display: flex;
   justify-content: space-between;
   align-items: center;
 
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  padding: 16px 32px;
 
-  position: sticky;
-  top: 0;
-  left: 10;
-  z-index: 1000;
+  background: rgba(12, 12, 12, 0.75);
+  backdrop-filter: blur(18px);
+
+  border-bottom: 1px solid rgba(255,255,255,0.08);
 }
+
+/* ================= LOGO ================= */
 
 .club-logo {
-  color: #FF9500;
-  font-size: 24px;
-  font-weight: bold;
-  margin-left: 0;
-  padding-left: 0;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #fbfbfb;
 }
+
+/* ================= LINKS CONTAINER ================= */
 
 .club-nav-links {
   display: flex;
   align-items: center;
-  gap: 0;
+  gap: 22px;
 }
 
-/* Clear/transparent backgrounds for ALL buttons except logout */
-.club-nav-links > a:not(.club-logout-btn) {
-  background: transparent;
-  color: white !important;
-  display: inline-block;
-  padding: 12px 24px;
-  border-radius: 25px;
-  text-decoration: none;
-  font-weight: 500;
+/* ================= NAV LINKS ================= */
+
+.club-nav-link {
+  position: relative;
   font-size: 14px;
-  transition: all 0.2s ease-out;
-  margin-right: 12px;
+  font-weight: 600;
+  text-decoration: none;
+
+  color: #d1d5db;
+  transition: color 0.2s ease;
 }
 
-/* Subtle hover for transparent buttons */
-.club-nav-links > a:not(.club-logout-btn):hover {
-  background: transparent;
-  transform: translateY(-1px) scale(1.02);
-  box-shadow: 0 4px 12px rgba(255, 149, 0, 0.3), 0 0 10px rgba(255, 149, 0, 0.3);
+.club-nav-link:hover {
+  color: #ffb347;
 }
 
-/* Active state for transparent buttons */
-.club-nav-links > a:not(.club-logout-btn).club-active {
-  background: rgba(255, 149, 0, 0.2);
-  box-shadow: 0 4px 12px rgba(255, 149, 0, 0.3);
+/* ACTIVE LINK */
+.club-active {
+  color: #ffb347;
 }
 
-.club-nav-links > a:not(.club-logout-btn).club-active:hover {
-  background: rgba(255, 149, 0, 0.3);
-  transform: translateY(-1px) scale(1.02);
-  box-shadow: 0 8px 25px rgba(255, 149, 0, 0.4), 0 0 15px rgba(255, 149, 0, 0.2);
+.club-active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(135deg, #ff9500, #ffb347);
+  border-radius: 2px;
 }
 
-/* Notifications keeps transparent + badge support */
+/* ================= NOTIFICATION ================= */
+
 .club-notification-link {
-  background: transparent;
-  color: white !important;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  padding-right: 10px;
 }
 
 .club-notification-badge {
-  background-color: #FF0000;
-  color: white;
+  position: absolute;
+  top: -8px;
+  right: -14px;
+
+  min-width: 18px;
+  height: 18px;
+
+  background: #ff9500;
+  color: #020617;
+
+  font-size: 11px;
+  font-weight: 700;
   border-radius: 50%;
-  width: 20px;
-  height: 20px;
-  font-size: 12px;
-  font-weight: bold;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
+  box-shadow: 0 0 10px rgba(255,149,0,0.7);
 }
 
-/* Orange logout button ONLY */
+/* ================= LOGOUT BUTTON ================= */
+
 .club-logout-btn {
-  background: linear-gradient(145deg, #FF9500, #FFA500) !important;
-  color: #333 !important; /* Dark text for orange contrast */
-  border: none;
-  padding: 12px 20px;
-  border-radius: 25px;
-  font-weight: 500;
-  font-size: 14px;
+  margin-left: 6px;
+
+  background: transparent;
+  border: 1px solid rgba(255,149,0,0.5);
+  color: #fbfbfb;
+
+  padding: 6px 14px;
+  border-radius: 8px;
+
+  font-size: 13px;
+  font-weight: 600;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(255, 149, 0, 0.4);
-  transition: all 0.2s ease-out;
-  text-decoration: none;
-  display: inline-block;
+
+  transition: all 0.2s ease;
 }
 
 .club-logout-btn:hover {
-  transform: translateY(-1px) scale(1.02);
-  box-shadow: 0 8px 25px rgba(255, 149, 0, 0.6), 
-              0 0 20px rgba(255, 149, 0, 0.3);
-  background: linear-gradient(145deg, #FF8C00, #FF9500);
+  background: rgba(255,149,0,0.15);
+  transform: translateY(-1px);
+  box-shadow:
+    0 6px 16px rgba(0,0,0,0.85),
+    0 0 14px rgba(255,149,0,0.35);
 }
-.wrapper {
-  max-width: none;
-  margin: 0;
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 900px) {
+  .club-navbar {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .club-nav-links {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
 }

@@ -39,6 +39,7 @@
   font-size: clamp(2.4rem, 6vw, 3.6rem);
   font-weight: 900;
   text-transform: uppercase;
+  margin-top:0.05rem;
   margin-bottom: 3rem;
 }
 
@@ -53,13 +54,13 @@
 /* ================= CLUB CARD ================= */
 
 .club-card {
-  height: 340px; /* SAME SIZE */
+  height: 300px; /* SAME SIZE */
   background: rgba(255,255,255,0.04);
   backdrop-filter: blur(18px);
   border-radius: 22px;
   border: 1px solid rgba(255,255,255,0.08);
 
-  padding: 1.6rem 1.4rem;
+  padding: 0.5rem 0.5rem;
   text-align: center;
 
   display: flex;
@@ -87,7 +88,7 @@
   height: 96px;
   border-radius: 16px;
   object-fit: cover;
-  margin-bottom: 0.8rem;
+  margin-bottom: 0.01rem;
 }
 /* Placeholder circle when logo is missing */
 .club-logo-placeholder {
@@ -113,14 +114,16 @@
 /* ================= NAME ================= */
 
 .club-name {
-  font-size: 1.2rem;
+  font-size: 2rem;
   font-weight: 800;
   letter-spacing: 0.08em;
-  margin-bottom: 0.2rem;
+  margin-top:0;
+  margin-bottom: 0.01rem;
   
 }
 
 .club-name a {
+  font-size:2rem;
   color: #f9f3f4; /* ✅ soft off-white */
   text-decoration: none;
 }
