@@ -1,0 +1,170 @@
+:root {
+  --clubs-bg: #020617;          /* deep navy */
+  --clubs-card: #0b1120;
+  --clubs-border: #1f2937;
+  --clubs-text: #e5e7eb;
+  --clubs-muted: #9ca3af;
+  --clubs-orange: #f97316;
+}
+
+/* Page wrapper */
+.clubs-page {
+  min-height: 100vh;
+  background-color: var(--clubs-bg);
+  color: var(--clubs-text);
+  padding: 80px 20px 40px;
+}
+
+.clubs-inner {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* Title */
+.clubs-page h2 {
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 18px;
+  color: #facc15; /* visible on navy */
+}
+
+/* List layout */
+.clubs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Card */
+.club-card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: center;
+  background: radial-gradient(
+      circle at top left,
+      rgba(249, 115, 22, 0.16),
+      transparent 55%
+    ),
+    var(--clubs-card);
+  border-radius: 14px;
+  padding: 14px 16px;
+  border: 1px solid var(--clubs-border);
+  box-shadow: 0 16px 34px rgba(15, 23, 42, 0.95);
+  transition:
+    transform 0.16s ease,
+    box-shadow 0.16s ease,
+    border-color 0.16s ease,
+    background 0.16s ease;
+}
+
+.club-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--clubs-orange);
+  box-shadow:
+    0 20px 40px rgba(15, 23, 42, 1),
+    0 0 16px rgba(249, 115, 22, 0.35);
+}
+
+/* Logo */
+.club-logo {
+  width: 60px;
+  height: 60px;
+  border-radius: 10px;
+  object-fit: cover;
+  border: 1px solid rgba(148, 163, 184, 0.6);
+}
+
+/* Content */
+.club-main {
+  min-width: 0;
+}
+
+.club-main h3 {
+  margin: 0 0 4px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.club-main h3 a {
+  color: #f9fafb;
+  text-decoration: none;
+}
+
+.club-main h3 a:hover {
+  color: var(--clubs-orange);
+}
+
+.club-main p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--clubs-muted);
+}
+
+.club-main small {
+  display: inline-block;
+  margin-top: 6px;
+  font-size: 12px;
+  color: #e5e7eb;
+}
+
+/* Bookmark button */
+.club-bookmark-btn {
+  align-self: flex-start;
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  background: var(--clubs-orange);
+  color: #020617;
+  box-shadow:
+    0 0 12px rgba(249, 115, 22, 0.6),
+    0 10px 26px rgba(15, 23, 42, 0.9);
+  transition:
+    transform 0.16s ease,
+    box-shadow 0.16s ease,
+    filter 0.16s ease;
+}
+
+.club-bookmark-btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.03);
+  box-shadow:
+    0 0 16px rgba(249, 115, 22, 0.8),
+    0 14px 34px rgba(15, 23, 42, 1);
+}
+
+/* Different look when already bookmarked */
+.club-bookmark-btn.bookmarked {
+  background: transparent;
+  color: var(--clubs-orange);
+  border: 1px solid rgba(249, 115, 22, 0.7);
+  box-shadow: none;
+}
+
+.club-bookmark-btn.bookmarked:hover {
+  background: rgba(15, 23, 42, 0.9);
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .clubs-page {
+    padding: 70px 14px 30px;
+  }
+
+  .club-card {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+  }
+
+  .club-logo {
+    width: 52px;
+    height: 52px;
+  }
+
+  .club-bookmark-btn {
+    justify-self: flex-start;
+  }
+}

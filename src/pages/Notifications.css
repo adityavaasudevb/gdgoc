@@ -1,0 +1,226 @@
+:root {
+  --bg-main: #020617;
+  --bg-card: rgba(15, 23, 42, 0.85);
+  --border-glass: rgba(148, 163, 184, 0.6);
+  --accent-1: #22d3ee;
+  --accent-2: #a855f7;
+  --accent-3: #f97316;
+  --text-main: #e5e7eb;
+  --text-muted: #9ca3af;
+  --radius-xl: 18px;
+}
+
+/* Page */
+
+.notif-page {
+  position: relative;
+  max-width: 720px;
+  margin: 32px auto;
+  padding: 16px;
+  color: var(--text-main);
+  min-height: 60vh;
+  background: radial-gradient(circle at top, #0f172a 0, #020617 45%);
+  overflow: hidden;
+}
+
+/* Big background gradient blob */
+
+.notif-bg-gradient {
+  position: absolute;
+  inset: -120px;
+  background:
+    radial-gradient(circle at 0% 0%, rgba(34, 211, 238, 0.18), transparent 55%),
+    radial-gradient(circle at 100% 0%, rgba(168, 85, 247, 0.18), transparent 55%),
+    radial-gradient(circle at 50% 100%, rgba(249, 115, 22, 0.12), transparent 55%);
+  filter: blur(8px);
+  opacity: 0.9;
+  z-index: 0;
+}
+
+/* Header */
+
+.notif-header {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.notif-header h2 {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.notif-pill {
+  background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+  color: #0b1120;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  box-shadow: 0 0 14px rgba(34, 211, 238, 0.7);
+}
+
+/* Empty state */
+
+.notif-empty {
+  position: relative;
+  z-index: 1;
+  margin-top: 6px;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+/* List */
+
+.notif-list {
+  position: relative;
+  z-index: 1;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Card */
+
+.notif-card {
+  position: relative;
+  border-radius: var(--radius-xl);
+  padding: 12px 14px;
+  display: flex;
+  gap: 12px;
+  backdrop-filter: blur(18px);
+  background: linear-gradient(
+      120deg,
+      rgba(15, 23, 42, 0.95),
+      rgba(15, 23, 42, 0.7)
+    );
+  border: 1px solid rgba(148, 163, 184, 0.6);
+  box-shadow: 0 22px 50px rgba(15, 23, 42, 0.9);
+  overflow: hidden;
+  cursor: default;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    border-color 0.18s ease,
+    background 0.18s ease;
+}
+
+/* Animated neon border (Gen Z-ish) */
+
+.notif-card::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(
+    from 180deg,
+    var(--accent-1),
+    var(--accent-2),
+    var(--accent-3),
+    var(--accent-1)
+  );
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  animation: spin-gradient 7s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes spin-gradient {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.notif-card:hover {
+  transform: translateY(-2px) scale(1.01);
+  box-shadow: 0 26px 60px rgba(15, 23, 42, 1);
+  border-color: transparent;
+}
+
+.notif-card:hover::before {
+  opacity: 1;
+}
+
+/* Accent glow strip on left */
+
+.notif-accent {
+  width: 6px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, var(--accent-1), var(--accent-2));
+  box-shadow:
+    0 0 10px rgba(34, 211, 238, 0.7),
+    0 0 26px rgba(168, 85, 247, 0.7);
+}
+
+/* Read vs unread */
+
+.notif-unread {
+  background: linear-gradient(
+      130deg,
+      rgba(56, 189, 248, 0.14),
+      rgba(129, 140, 248, 0.08)
+    ),
+    rgba(15, 23, 42, 0.9);
+}
+
+.notif-read {
+  opacity: 0.8;
+  border-color: rgba(100, 116, 139, 0.7);
+}
+
+.notif-read .notif-accent {
+  box-shadow: none;
+  filter: grayscale(0.2) brightness(0.9);
+}
+
+/* Content */
+
+.notif-main {
+  flex: 1;
+}
+
+.notif-message {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.notif-time {
+  display: block;
+  margin-top: 4px;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* Mobile */
+
+@media (max-width: 600px) {
+  .notif-page {
+    margin: 20px auto;
+    padding: 12px;
+  }
+
+  .notif-card {
+    padding: 10px 12px;
+  }
+
+  .notif-message {
+    font-size: 13px;
+  }
+
+  .notif-time {
+    font-size: 10px;
+  }
+}
