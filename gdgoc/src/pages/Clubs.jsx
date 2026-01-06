@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { getClubs, getUserBookmarks, toggleBookmark } from "../firebase/firestore";
 import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router-dom";
-
+import "./Clubs.css";
 /*
   Public page:
   - Lists all clubs
@@ -50,50 +50,60 @@ export default function Clubs() {
   };
 
   return (
-    <div>
-      <h2>Clubs</h2>
+    <div className="clubs-page">
+  <div className="clubs-container">
+    <h2 className="clubs-title">Clubs</h2>
+    <div className="clubs-grid">
+    {clubs.map((club) => (
+      <div key={club.id} className="club-card">
+        
+        <div className="club-header">
+  <div className="club-logo-wrapper">
+    {club.logoUrl && (
+      <img
+        src={club.logoUrl}
+        alt={club.name}
+        className="club-logo"
+      />
+    )}
+  </div>
 
-      {clubs.map((club) => (
-        <div
-          key={club.id}
-          style={{
-            border: "1px solid #ddd",
-            padding: "12px",
-            margin: "12px 0",
-            borderRadius: "8px",
-          }}
-        >
-          {/* Club logo (if uploaded) */}
-          {club.logoUrl && (
-            <img
-              src={club.logoUrl}
-              alt={club.name}
-              style={{
-                width: "60px",
-                height: "60px",
-                objectFit: "cover",
-                borderRadius: "6px",
-              }}
-            />
-          )}
+  <h3 className="club-name">
+    <Link to={`/clubs/${club.id}`}>{club.name}</Link>
+  </h3>
+</div>
 
-          {/* Navigate to club detail page */}
-          <h3>
-            <Link to={`/clubs/${club.id}`}>{club.name}</Link>
-          </h3>
 
-          <p>{club.description}</p>
-          <small>{club.category}</small>
-          <br /><br />
+        {/* Description */}
+        <p className="club-description">{club.description}</p>
 
-          {/* Bookmark toggle */}
-          {user && (
-            <button onClick={() => handleBookmark(club.id)}>
-              {bookmarks.includes(club.id) ? "Bookmarked ⭐" : "Bookmark"}
+        {/* Category */}
+        <div className="club-category">{club.category}</div>
+
+        {/* Bookmark button */}
+        {user && (
+          <div className="club-actions">
+            <button
+              className={
+                bookmarks.includes(club.id)
+                  ? "club-btn club-btn-bookmarked"
+                  : "club-btn club-btn-primary"
+              }
+              onClick={() => handleBookmark(club.id)}
+            >
+              {bookmarks.includes(club.id) ? "⭐ Bookmarked" : "Bookmark"}
             </button>
-          )}
-        </div>
-      ))}
-    </div>
+
+
+
+          </div>
+        )}
+
+      </div>
+    ))}
+  </div>
+  </div>
+</div>
+
   );
 }

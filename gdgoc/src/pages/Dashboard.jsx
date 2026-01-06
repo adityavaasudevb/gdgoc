@@ -36,26 +36,16 @@ export default function Dashboard() {
   }, [user]);
 
   return (
-    <>
-      {/* HERO */}
-      <section className="dashboard-hero">
-        <div className="hero-content">
-          <h1>Welcome to GRIET Hub</h1>
-          <p>Your central place for clubs, events, and campus opportunities</p>
+    <div className="dashboard-page">
+      {/* HEADER */}
+      <div className="dashboard-header">
+        <h1>GRIET Hub</h1>
+        <p>Your central system for clubs, events, and campus activity</p>
+      </div>
 
-          <div className="hero-actions">
-            <Link to="/events" className="hero-btn primary">
-              Explore Events
-            </Link>
-            <Link to="/clubs" className="hero-btn secondary">
-              Browse Clubs
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* MAIN CONTENT */}
+      {/* CONTENT */}
       <div className="dashboard-container">
+        {/* UPCOMING EVENTS */}
         <section className="section">
           <h2>Upcoming Events</h2>
 
@@ -84,23 +74,29 @@ export default function Dashboard() {
           </div>
         </section>
 
+        {/* BOOKMARKED CLUBS */}
         <section className="section">
           <h2>Your Bookmarked Clubs</h2>
 
-          <div className="card-grid small">
+          <div className="card-grid">
             {bookmarkedClubs.map((club) => (
-              <div key={club.id} className="card compact">
+              <div key={club.id} className="card">
                 <h3>{club.name}</h3>
                 <p className="muted">{club.category}</p>
+                <Link to={`/clubs/${club.id}`} className="primary-btn">
+                  View Club
+                </Link>
               </div>
             ))}
 
             {bookmarkedClubs.length === 0 && (
-              <p className="muted">You haven’t bookmarked any clubs yet.</p>
+              <p className="muted">
+                You haven’t bookmarked any clubs yet.
+              </p>
             )}
           </div>
         </section>
       </div>
-    </>
+    </div>
   );
 }

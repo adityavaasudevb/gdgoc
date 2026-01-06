@@ -1,0 +1,235 @@
+/* ================= CLUBS LIST PAGE ================= */
+
+.clubs-page {
+  min-height: 100vh;
+  background: linear-gradient(
+    135deg,
+    #0c0c0c 0%,
+    #1a1a1a 50%,
+    #242424 100%
+  );
+  padding: 3rem 1.5rem 5rem;
+  color: #ffffff;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Ambient glow */
+.clubs-page::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(circle at top right, rgba(255,149,0,0.25), transparent 60%),
+    radial-gradient(circle at bottom left, rgba(255,255,255,0.08), transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.clubs-container {
+  max-width: 1200px;
+  margin: auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* ================= TITLE ================= */
+
+.clubs-title {
+  font-size: clamp(2.4rem, 6vw, 3.6rem);
+  font-weight: 900;
+  text-transform: uppercase;
+  margin-top:0.05rem;
+  margin-bottom: 3rem;
+}
+
+/* ================= GRID ================= */
+
+.clubs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 2.2rem;
+}
+
+/* ================= CLUB CARD ================= */
+
+.club-card {
+  height: 300px; /* SAME SIZE */
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(18px);
+  border-radius: 22px;
+  border: 1px solid rgba(255,255,255,0.08);
+
+  padding: 0.5rem 0.5rem;
+  text-align: center;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  position: relative;
+  overflow: hidden;
+
+  transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+}
+
+.club-card:hover {
+  transform: translateY(-10px);
+  border-color: rgba(255,149,0,0.5);
+  box-shadow:
+    0 24px 50px rgba(0,0,0,0.85),
+    0 0 0 1px rgba(255,149,0,0.35);
+}
+
+/* ================= LOGO ================= */
+
+.club-logo {
+  width: 96px;
+  height: 96px;
+  border-radius: 16px;
+  object-fit: cover;
+  margin-bottom: 0.01rem;
+}
+/* Placeholder circle when logo is missing */
+.club-logo-placeholder {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: linear-gradient(
+    135deg,
+    rgba(255,149,0,0.35),
+    rgba(255,149,0,0.15)
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1.2rem;
+  color: #ffcc80;
+  margin-bottom: 0.8rem;
+  box-shadow: 0 6px 18px rgba(255,149,0,0.35);
+}
+
+
+/* ================= NAME ================= */
+
+.club-name {
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  margin-top:0;
+  margin-bottom: 0.01rem;
+  
+}
+
+.club-name a {
+  font-size:2rem;
+  color: #f9f3f4; /* ✅ soft off-white */
+  text-decoration: none;
+}
+
+.club-name a:hover {
+  color: #ffb347; /* ✅ subtle orange on hover */
+}
+
+
+
+/* ================= CATEGORY ================= */
+
+.club-category {
+  font-size: 0.8rem;
+  opacity: 0.75;
+  margin-bottom: 0.8rem;
+}
+
+/* ================= BOOKMARK ================= */
+
+.club-actions {
+  margin-top: 0.6rem; /* tighter */
+}
+
+.club-btn {
+  padding: 0.6rem 1.8rem;
+  border-radius: 30px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+}
+
+.club-btn-primary {
+  background: linear-gradient(135deg, #ff9500, #ffb347);
+  color: #000;
+  box-shadow: 0 8px 22px rgba(255,149,0,0.45);
+}
+
+.club-btn-primary:hover {
+  transform: translateY(-2px);
+}
+
+.club-btn-bookmarked {
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+  border: 2px solid #ff9500;
+}
+
+/* ================= POP-UP DESCRIPTION ================= */
+
+.club-description {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+
+  background: rgba(0,0,0,0.85);
+  border-radius: 14px;
+  padding: 1rem 1.1rem;
+
+  font-size: 0.9rem;
+  line-height: 1.5;
+
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.club-card:hover .club-description {
+  opacity: 1;
+  transform: translateY(0);
+}
+.club-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* FIXES logo alignment across different logo shapes */
+.club-logo-wrapper {
+  width: 96px;
+  height: 96px;
+  border-radius: 16px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(255,255,255,0.06);
+  margin-bottom: 0.4rem;
+}
+
+.club-logo {
+  max-width: 80%;
+  max-height: 80%;
+  object-fit: contain; /* 🔑 KEY CHANGE */
+}
+
+.clubs-page {
+  padding-top: 6rem; /* ⬅️ push content below navbar */
+}
+
+.club-card {
+  justify-content: flex-start;
+}

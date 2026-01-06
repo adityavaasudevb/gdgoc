@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { getUserNotifications } from "../firebase/firestore";
 import { useLocation } from "react-router-dom";
+import "./Navbar.css";  // ✅ ENSURE THIS LINE EXISTS
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -17,13 +18,12 @@ export default function Navbar() {
 
   const location = useLocation();
 
-useEffect(() => {
-  if (location.state?.clearBadge) {
-    setUnreadCount(0);
-  }
-}, [location]);
+  useEffect(() => {
+    if (location.state?.clearBadge) {
+      setUnreadCount(0);
+    }
+  }, [location]);
 
-  // 🔔 Fetch unread notifications
   useEffect(() => {
     if (!user) return;
 
@@ -37,44 +37,37 @@ useEffect(() => {
   }, [user]);
 
   return (
-    <nav
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        padding: "12px 20px",
-        borderBottom: "1px solid #ddd",
-      }}
+    <nav className="club-navbar">
+  <div className="club-logo">
+    <strong>G-HUB</strong>
+  </div>
+
+  <div className="club-nav-links">
+    <Link to="/dashboard" className={({ isActive }) => `club-nav-link ${isActive ? 'club-active' : ''}`}>
+      Dashboard
+    </Link>
+    <Link to="/clubs" className={({ isActive }) => `club-nav-link ${isActive ? 'club-active' : ''}`}>
+      Clubs
+    </Link>
+    <Link to="/events" className={({ isActive }) => `club-nav-link ${isActive ? 'club-active' : ''}`}>
+      Events
+    </Link>
+    <Link to="/past-events" className={({ isActive }) => `club-nav-link ${isActive ? 'club-active' : ''}`}>
+      Past Events
+    </Link>
+    <Link 
+      to="/notifications" 
+      state={{ clearBadge: true }} 
+      className="club-nav-link club-notification-link"
     >
-      <strong>GDGOC</strong>
+      Notifications
+      {unreadCount > 0 && <span className="club-notification-badge">{unreadCount}</span>}
+    </Link>
+    <button className="club-logout-btn" onClick={handleLogout}>
+      Logout
+    </button>
+  </div>
+</nav>
 
-      <div style={{ display: "flex", gap: "16px", alignItems: "center" }}>
-        <Link to="/dashboard">Dashboard</Link>
-        <Link to="/clubs">Clubs</Link>
-        <Link to="/events">Events</Link>
-        <Link to="/past-events">Past Events</Link>
-        <Link to="/notifications" state={{ clearBadge: true }} style={{ position: "relative" }}>
-
-          Notifications
-          {unreadCount > 0 && (
-            <span
-              style={{
-                position: "absolute",
-                top: "-6px",
-                right: "-10px",
-                background: "red",
-                color: "white",
-                borderRadius: "50%",
-                padding: "2px 6px",
-                fontSize: "12px",
-              }}
-            >
-              {unreadCount}
-            </span>
-          )}
-        </Link>
-
-        <button onClick={handleLogout}>Logout</button>
-      </div>
-    </nav>
   );
 }

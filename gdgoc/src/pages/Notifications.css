@@ -1,0 +1,78 @@
+/* ================= NOTIFICATIONS PAGE ================= */
+
+.notifications-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0c0c0c, #1a1a1a, #242424);
+  padding: 6rem 1.5rem 5rem;
+  color: #ffffff;
+  position: relative;
+}
+
+.notifications-page::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(circle at top right, rgba(255,149,0,0.25), transparent 60%),
+    radial-gradient(circle at bottom left, rgba(255,255,255,0.08), transparent 60%);
+  pointer-events: none;
+}
+
+/* ================= CONTAINER ================= */
+
+.notifications-container {
+  max-width: 600px;
+  margin: auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* ================= TITLE ================= */
+
+.notifications-title {
+  font-size: clamp(2rem, 5vw, 2.6rem);
+  font-weight: 900;
+  text-transform: uppercase;
+  margin-bottom: 2rem;
+}
+
+/* ================= EMPTY ================= */
+
+.notifications-empty {
+  text-align: center;
+  opacity: 0.75;
+  font-size: 0.95rem;
+}
+
+/* ================= CARD ================= */
+
+.notification-card {
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(16px);
+  border-radius: 18px;
+  padding: 1.1rem 1.3rem;
+  margin-bottom: 1rem;
+  border: 1px solid rgba(255,255,255,0.08);
+  transition: all 0.3s ease;
+}
+
+.notification-card.unread {
+  border-color: rgba(255,149,0,0.45);
+  box-shadow: 0 10px 30px rgba(255,149,0,0.25);
+}
+
+.notification-card:hover {
+  transform: translateY(-4px);
+}
+
+/* ================= TEXT ================= */
+
+.notification-message {
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.notification-time {
+  font-size: 0.75rem;
+  opacity: 0.65;
+}

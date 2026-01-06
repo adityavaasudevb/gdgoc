@@ -1,76 +1,82 @@
 import { useEffect, useState } from "react";
 import { getEvents } from "../firebase/firestore";
 import { isFutureEvent } from "../utils/dateUtils";
-import { getGoogleCalendarUrl } from "../utils/calendarUtils"; // ✅ ADD THIS
+import { getGoogleCalendarUrl } from "../utils/calendarUtils";
+import "./Events.css";
 
 export default function Events() {
   const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchEvents = async () => {
-      const data = await getEvents();
+      setLoading(true);
 
-      // ✅ sort upcoming by date (earliest first)
+      const data = await getEvents();
       const upcomingSorted = data
-        .filter(e => isFutureEvent(e.date))
+        .filter((e) => isFutureEvent(e.date))
         .sort((a, b) => new Date(a.date) - new Date(b.date));
 
       setEvents(upcomingSorted);
+      setLoading(false);
     };
+
     fetchEvents();
   }, []);
 
   return (
-    <div>
-      <h2>Upcoming Events</h2>
+    <div className="events-page">
+      <div className="events-container">
+        <h2 className="events-title">Upcoming Events</h2>
 
-      {events.length === 0 && <p>No upcoming events right now.</p>}
+        {loading && <p className="events-state">Loading events...</p>}
 
-      {events.map(event => (
-        <div
-          key={event.id}
-          style={{
-            border: "1px solid #ddd",
-            padding: 12,
-            margin: "12px 0",
-            borderRadius: 8,
-          }}
-        >
-          {event.imageUrl && (
-            <img
-              src={event.imageUrl}
-              alt={event.title}
-              style={{
-                width: "100%",
-                maxHeight: "200px",
-                objectFit: "cover",
-                borderRadius: "6px",
-                marginBottom: "8px",
-              }}
-            />
-          )}
+        {!loading && events.length === 0 && (
+          <p className="events-state">No upcoming events.</p>
+        )}
 
-          <h3>{event.title}</h3>
-          <p>{event.description}</p>
-          <small>{event.club} | {event.date}</small>
-          <br /><br />
+        {!loading &&
+          events.map((event) => (
+            <div key={event.id} className="event-card">
+              {event.imageUrl && (
+                <div className="event-image-wrapper">
+                  <img
+                    src={event.imageUrl}
+                    alt={event.title}
+                    className="event-image"
+                  />
+                </div>
+              )}
 
-          {/* Registration */}
-          <button onClick={() => window.open(event.registrationLink, "_blank")}>
-            Open Registration Form
-          </button>
+              <h3>{event.title}</h3>
+              <p className="muted">{event.description}</p>
+              <p className="meta">
+                {event.club} · {event.date}
+              </p>
 
-          {/* 📅 Save to Calendar */}
-          <button
-            style={{ marginLeft: "8px" }}
-            onClick={() =>
-              window.open(getGoogleCalendarUrl(event), "_blank")
-            }
-          >
-            Save to Calendar
-          </button>
-        </div>
-      ))}
+              <div style={{ marginTop: "1rem" }}>
+                <button
+                  className="primary-btn"
+                  onClick={() =>
+                    window.open(event.registrationLink, "_blank")
+                  }
+                >
+                  Register
+                </button>
+
+                <button
+                  className="primary-btn"
+                  onClick={() =>
+                    window.open(getGoogleCalendarUrl(event), "_blank")
+                  }
+                  style={{ marginLeft: "0.8rem" }}
+                >
+                  Save to Calendar
+                </button>
+              </div>
+            </div>
+          ))}
+      </div>
     </div>
   );
 }
