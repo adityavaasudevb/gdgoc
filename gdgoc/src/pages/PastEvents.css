@@ -1,63 +1,73 @@
-/* PAGE */
+/* ================= PAST EVENTS PAGE (CLUBS THEME) ================= */
+
 .past-page {
   min-height: 100vh;
-  background: radial-gradient(circle at top, #031a3a, #020617);
-  padding: 3rem 2rem;
+  background: linear-gradient(
+    135deg,
+    #0c0c0c 0%,
+    #1a1a1a 50%,
+    #242424 100%
+  );
+  padding: 3rem 2rem 5rem;
   color: #ffffff;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Ambient glow */
+.past-page::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(circle at top right, rgba(255,149,0,0.25), transparent 60%),
+    radial-gradient(circle at bottom left, rgba(255,255,255,0.08), transparent 60%);
+  pointer-events: none;
+  z-index: 0;
 }
 
 .past-container {
   max-width: 1400px;
   margin: auto;
+  position: relative;
+  z-index: 1;
 }
 
 /* ================= PAGE TITLE ================= */
 
 .past-title {
   font-family: "Poppins", sans-serif;
-  font-size: 1.2rem;            /* reduced size */
+  font-size: clamp(1.1rem, 2.5vw, 1.3rem);
   font-weight: 800;
-  text-transform: uppercase;    /* ALL CAPS */
-  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
   margin-bottom: 3rem;
-
-  background: linear-gradient(
-    90deg,
-    #60a5fa,
-    #3b82f6,
-    #1d4ed8
-  );
-  -webkit-background-clip: text;
- 
-  -webkit-text-fill-color: transparent;
+  color: #ffffff;
+  opacity: 0.9;
 }
 
+/* ================= CLUB SECTION ================= */
 
-/* CLUB */
 .past-club {
   margin-bottom: 4rem;
 }
 
+/* Club Name */
 .club-name {
   font-family: "Anton", sans-serif;
   font-size: clamp(2.2rem, 4.5vw, 3.4rem);
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  line-height: 1;
   margin-bottom: 1.6rem;
-
-  background: linear-gradient(135deg, #60a5fa, #3b82f6);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: #fbfbfb;
 }
 
+/* ================= GRID ================= */
 
-
-/* 🔥 REAL GRID: 3 CARDS SIDE BY SIDE */
 .event-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 2.5rem;
+  gap: 2.4rem;
 }
 
 /* Responsive */
@@ -66,67 +76,89 @@
     grid-template-columns: repeat(2, 1fr);
   }
 }
-
 @media (max-width: 700px) {
   .event-grid {
     grid-template-columns: 1fr;
   }
 }
 
-/* CARD */
-.event-info h4 {
-  font-family: "Poppins", sans-serif;
-  font-size: 1.35rem;
-  font-weight: 600;
-  color: #ffffff;
+/* ================= EVENT CARD ================= */
+
+.event-card {
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(18px);
+  border-radius: 22px;
+  border: 1px solid rgba(255,255,255,0.08);
+  padding: 1.6rem;
+  position: relative;
+  overflow: hidden;
+
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease,
+    border-color 0.35s ease;
 }
 
 .event-card:hover {
-  transform: translateY(-14px);
-  box-shadow: 0 40px 90px rgba(0,0,0,0.85);
+  transform: translateY(-10px);
+  border-color: rgba(255,149,0,0.5);
+  box-shadow:
+    0 24px 50px rgba(0,0,0,0.85),
+    0 0 0 1px rgba(255,149,0,0.35);
 }
 
-/* IMAGE */
+/* ================= IMAGE ================= */
+
 .event-image-wrapper {
   background: #000;
   border-radius: 16px;
   overflow: hidden;
+  margin-bottom: 1rem;
 }
 
 .event-image {
   width: 100%;
   height: auto;
-  object-fit: contain;
   display: block;
+  object-fit: contain;
 }
 
-/* TEXT */
+/* ================= TEXT ================= */
+
 .event-info h4 {
-  font-size: 1.4rem;
+  font-family: "Poppins", sans-serif;
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: #fbfbfb;
+  margin-bottom: 0.4rem;
 }
 
 .event-summary {
   font-family: "Poppins", sans-serif;
   font-size: 0.95rem;
-  color: #c7d2fe;
-  opacity: 0.95;
+  color: #e5e7eb;
+  opacity: 0.9;
 }
-
 
 .event-rating {
   color: #facc15;
 }
 
-/* HIDDEN DESCRIPTION */
+/* ================= DESCRIPTION (POP-UP) ================= */
+
 .event-description {
+  margin-top: 0.8rem;
   font-family: "Poppins", sans-serif;
   font-size: 0.9rem;
-  color: #e0e7ff;
   line-height: 1.6;
+  color: #f1f5f9;
+
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: opacity 0.3s ease, max-height 0.3s ease;
 }
 
-
-/* SHOW ON HOVER */
 .event-card:hover .event-description {
   opacity: 1;
   max-height: 220px;

@@ -52,8 +52,9 @@
 
 /* ================= EVENT CARD ================= */
 
-.event-card {
-  background: rgba(255,255,255,0.03);
+.upcoming-events .event-card {
+  background: rgba(255,255,255,0.95) !important;
+
   backdrop-filter: blur(18px);
   border-radius: 22px;
   padding: 2rem;

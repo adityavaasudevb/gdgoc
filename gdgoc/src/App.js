@@ -10,24 +10,36 @@ import { useAuth } from "./context/AuthContext";
 import ClubDetail from "./pages/ClubDetail";
 import PastEvents from "./pages/PastEvents.jsx";
 import Notifications from "./pages/Notifications";
-import ChatWidget from "./components/ChatWidget"; // ✅ import
+import ChatWidget from "./components/ChatWidget";
 
-
-/*
-  AppRoutes:
-  - Handles routing
-  - Shows Navbar only when user is logged in
-  - Mounts ChatWidget globally (important)
-*/
 function AppRoutes() {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
+
+  // 🔒 BLOCK UI UNTIL AUTH STATE IS RESOLVED
+  if (loading) {
+    return (
+      <div
+        style={{
+          minHeight: "100vh",
+          background: "#020617",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          color: "#ffffff",
+          fontSize: "1.1rem",
+          letterSpacing: "0.05em",
+        }}
+      >
+        Loading...
+      </div>
+    );
+  }
 
   return (
     <>
       {/* Show navbar only after login */}
       {user && <Navbar />}
 
-      {/* Main app routes */}
       <Routes>
         <Route path="/" element={<Login />} />
 
@@ -86,9 +98,8 @@ function AppRoutes() {
         />
       </Routes>
 
-      {/* 🤖 Floating Gemini Chat Assistant (only after login) */}
-{user && <ChatWidget />}
-
+      {/* 🤖 Chat Assistant */}
+      {user && <ChatWidget />}
     </>
   );
 }

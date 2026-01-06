@@ -1,0 +1,232 @@
+/* ---------------- NAVBAR ---------------- */
+.main-navbar {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 50;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 32px;
+  background: transparent;
+}
+
+.logo {
+  font-size: 18px;
+  font-weight: 700;
+  color: #fbfbfb;
+}
+
+.nav-links {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+}
+
+.nav-links a {
+  color: #e5e7eb;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.15s ease;
+}
+
+.nav-links a:hover {
+  color: #ff9500;
+}
+
+.logout-btn {
+  background: transparent;
+  border: 1px solid rgba(255,149,0,0.6);
+  color: #fbfbfb;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.logout-btn:hover {
+  background: rgba(0,0,0,0.85);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.8);
+}
+
+.notification-link {
+  position: relative;
+}
+
+.badge {
+  position: absolute;
+  top: -6px;
+  right: -10px;
+  background: #ff9500;
+  color: #020617;
+  font-size: 11px;
+  border-radius: 50%;
+  padding: 2px 6px;
+}
+
+/* ---------------- HERO ---------------- */
+.dashboard-hero {
+  position: relative;
+  height: 90vh;
+  background-image:
+    linear-gradient(
+      to bottom,
+      rgba(0,0,0,0.85),
+      rgba(0,0,0,0.7),
+      rgba(0,0,0,0.95)
+    ),
+    url("https://lh3.googleusercontent.com/gps-cs-s/AG0ilSwTTSRkc2iEIYNdIUGpQ8WVFUv64sbYfwEB99baMUyt7QOMPHG4m8jEUFJ2jjb4NEJgSMoYksj3LwVEVqDSGcVs-m43-7FMK9_AsgYjZRINieaTksYT-dP-owuPg6xlQ4lJ0YA=s1360-w1360-h1020-rw");
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-content {
+  text-align: center;
+  color: #fbfbfb;
+  max-width: 700px;
+  padding: 0 20px;
+}
+
+.dashboard-hero h1 {
+  font-size: 44px;
+  margin-bottom: 12px;
+}
+
+.dashboard-hero p {
+  font-size: 18px;
+  color: #d1d5db;
+}
+
+/* Smooth fade into dark content */
+.dashboard-hero::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 200px;
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,0),
+    rgba(0,0,0,0.8),
+    #020617
+  );
+  pointer-events: none;
+}
+
+/* ---------------- HERO BUTTONS ---------------- */
+.hero-actions {
+  margin-top: 32px;
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+.hero-btn {
+  padding: 12px 22px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.16s ease;
+}
+
+.hero-btn.primary {
+  background: linear-gradient(135deg, #ff9500, #ffb347);
+  color: #020617;
+  box-shadow: 0 12px 30px rgba(255,149,0,0.45);
+}
+
+.hero-btn.secondary {
+  border: 1px solid rgba(255,255,255,0.4);
+  color: #fbfbfb;
+  background: transparent;
+}
+
+.hero-btn:hover {
+  transform: translateY(-2px);
+}
+
+/* ---------------- CONTENT ---------------- */
+.dashboard-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 60px 20px;
+}
+
+/* ---------------- CARDS ---------------- */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(18px);
+  border-radius: 16px;
+  padding: 20px;
+  border: 1px solid rgba(255,255,255,0.08);
+  color: #fbfbfb;
+  box-shadow: 0 14px 30px rgba(0,0,0,0.85);
+  transition: all 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255,149,0,0.5);
+  box-shadow:
+    0 18px 40px rgba(0,0,0,1),
+    0 0 18px rgba(255,149,0,0.35);
+}
+
+/* ---------------- TEXT ---------------- */
+.muted {
+  color: #9ca3af;
+  font-size: 14px;
+}
+
+.meta {
+  font-size: 13px;
+  color: #e5e7eb;
+  margin: 10px 0;
+}
+
+/* ---------------- PRIMARY BUTTON ---------------- */
+.primary-btn {
+  background: linear-gradient(135deg, #ff9500, #ffb347);
+  color: #020617;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.15s ease;
+}
+
+.primary-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 0 18px rgba(255,149,0,0.6);
+}
+/* Section headings (Upcoming Events, Bookmarked Clubs) */
+.section-title,
+.section h2 {
+  color: #fbfbfb;              /* soft white */
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.section-title::after,
+.section h2::after {
+  content: "";
+  
+  display: block;
+  width: 48px;
+  height: 3px;
+  margin-top: 8px;
+  background: linear-gradient(135deg, #ff9500, #ffb347);
+  border-radius: 3px;
+}

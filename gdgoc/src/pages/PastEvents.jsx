@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { getEvents } from "../firebase/firestore";
 import { isFutureEvent } from "../utils/dateUtils";
@@ -63,7 +64,7 @@ export default function PastEvents() {
                       {evt.experience || "A memorable campus experience"}
                     </p>
 
-                    <div className="event-rating">⭐⭐⭐⭐☆</div>
+                    
 
                     <p className="event-description">
                       {evt.description ||

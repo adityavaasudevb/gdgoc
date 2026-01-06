@@ -1,3 +1,14 @@
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  background: linear-gradient(
+    135deg,
+    #0c0c0c 0%,
+    #1a1a1a 50%,
+    #242424 100%
+  );
+}
 
 
 body {
