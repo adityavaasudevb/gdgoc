@@ -6,6 +6,8 @@
   padding: 6rem 1.5rem 5rem;
   color: #ffffff;
   position: relative;
+  padding-top: 6rem;
+
 }
 
 .notifications-page::before {
@@ -30,11 +32,12 @@
 /* ================= TITLE ================= */
 
 .notifications-title {
-  font-size: clamp(2rem, 5vw, 2.6rem);
+  font-size: 3rem;        /* 🔑 MATCH ALL PAGES */
   font-weight: 900;
   text-transform: uppercase;
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
 }
+
 
 /* ================= EMPTY ================= */
 

@@ -6,8 +6,11 @@
   padding: 6rem 1.5rem 5rem;
   color: #ffffff;
   position: relative;
+  padding-top: 6rem;
+
 }
 
+/* Ambient glow */
 .events-page::before {
   content: "";
   position: fixed;
@@ -19,9 +22,9 @@
 }
 
 /* ================= CONTAINER ================= */
-
+/* 🔑 CRITICAL FIX: prevent insane zoom / narrow column */
 .events-container {
-  max-width: 1100px;
+  max-width: 900px;        /* FIXED reading width */
   margin: auto;
   position: relative;
   z-index: 1;
@@ -30,11 +33,12 @@
 /* ================= TITLE ================= */
 
 .events-title {
-  font-size: clamp(2.4rem, 6vw, 3.4rem);
+  font-size: 3rem;        /* 🔑 MATCH CLUBS / PAST EVENTS */
   font-weight: 900;
   text-transform: uppercase;
   margin-bottom: 3rem;
 }
+
 
 /* ================= STATE ================= */
 
@@ -50,7 +54,7 @@
   backdrop-filter: blur(18px);
   border-radius: 22px;
   padding: 2rem;
-  margin-bottom: 2.5rem;
+  margin-bottom: 3rem;     /* more breathing space */
   border: 1px solid rgba(255,255,255,0.08);
   transition: all 0.35s ease;
 }
@@ -63,21 +67,24 @@
     0 0 0 1px rgba(255,149,0,0.35);
 }
 
-/* ================= IMAGE ================= */
+/* ================= IMAGE (FIXED, SAFE) ================= */
 
 .event-image-wrapper {
+  width: 100%;
+  height: 260px;           /* 🔑 LOCKED height */
   overflow: hidden;
   border-radius: 18px;
   margin-bottom: 1.4rem;
+  background: #000;
 }
 
 .event-image {
   width: 100%;
-  height: 240px;
-  object-fit: cover;
+  height: 100%;
+  object-fit: cover;       /* 🔑 crop instead of stretch */
   transition: transform 0.6s ease;
 }
 
 .event-card:hover .event-image {
-  transform: scale(1.1);
+  transform: scale(1.05); /* subtle, not dramatic */
 }

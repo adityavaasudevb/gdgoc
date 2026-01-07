@@ -71,7 +71,7 @@ export default function Events() {
                   }
                   style={{ marginLeft: "0.8rem" }}
                 >
-                  Save to Calendar
+                  Add to Calendar
                 </button>
               </div>
             </div>

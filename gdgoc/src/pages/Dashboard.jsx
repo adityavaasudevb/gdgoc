@@ -37,10 +37,20 @@ export default function Dashboard() {
 
   return (
     <div className="dashboard-page">
-      {/* HEADER */}
+      {/* HERO HEADER */}
       <div className="dashboard-header">
-        <h1>GRIET Hub</h1>
+        <h1>GRIET HUB</h1>
         <p>Your central system for clubs, events, and campus activity</p>
+
+        {/* CTA BUTTONS */}
+        <div className="dashboard-cta">
+          <Link to="/events" className="cta-btn primary">
+            Explore Events
+          </Link>
+          <Link to="/clubs" className="cta-btn secondary">
+            Browse Clubs
+          </Link>
+        </div>
       </div>
 
       {/* CONTENT */}
@@ -51,17 +61,20 @@ export default function Dashboard() {
 
           <div className="card-grid">
             {events.map((event) => (
-              <div key={event.id} className="card">
-                <h3>{event.title}</h3>
-                <p className="muted">{event.description}</p>
-                <p className="meta">
-                  {event.club} · {event.date}
-                </p>
+              <div key={event.id} className="card event-card">
+                <div className="event-content">
+                  <h3>{event.title}</h3>
+                  <p className="muted">{event.description}</p>
+                  <p className="meta">
+                    {event.club} · {event.date}
+                  </p>
+                </div>
+
                 <button
+                  className="primary-btn"
                   onClick={() =>
                     window.open(event.registrationLink, "_blank")
                   }
-                  className="primary-btn"
                 >
                   Register
                 </button>
@@ -81,11 +94,15 @@ export default function Dashboard() {
           <div className="card-grid">
             {bookmarkedClubs.map((club) => (
               <div key={club.id} className="card">
-                <h3>{club.name}</h3>
+                <h3 className="card-title">
+                  <Link
+                    to={`/clubs/${club.id}`}
+                    className="card-link"
+                  >
+                    {club.name}
+                  </Link>
+                </h3>
                 <p className="muted">{club.category}</p>
-                <Link to={`/clubs/${club.id}`} className="primary-btn">
-                  View Club
-                </Link>
               </div>
             ))}
 
