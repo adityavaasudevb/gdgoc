@@ -1,3 +1,5 @@
+> ⚠️ **Note for evaluators:** The final hackathon submission is available on the `aditya` branch.
+
 # GRIET Hub
 
 A secure, institution-only platform that centralizes college clubs, events, and campus opportunities into a single verified system.
