@@ -39,7 +39,7 @@ export default function Navbar() {
   return (
     <nav className="club-navbar">
   <div className="club-logo">
-    <strong>G-HUB</strong>
+    <strong>GRIET-HUB</strong>
   </div>
 
   <div className="club-nav-links">
