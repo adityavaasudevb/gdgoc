@@ -4,9 +4,9 @@ import { isFutureEvent } from "../utils/dateUtils";
 
 /*
   Campus Assistant
-  - Fully deterministic
-  - No hallucinations
-  - Uses Firestore data only
+  - Deterministic
+  - Firestore-backed
+  - Rule-based (no hallucinations)
 */
 
 export default function ChatWidget() {
@@ -31,56 +31,78 @@ export default function ChatWidget() {
     try {
       const clubs = await getClubs();
       const events = await getEvents();
+      /* ===== DIRECT CLUB NAME MATCH (MOST IMPORTANT) ===== */
 
-      /* ================= CLUB QUESTIONS ================= */
+const clubByName = clubs.find((c) =>
+  question.includes(c.name.toLowerCase())
+);
+
+if (clubByName) {
+  setMessages((p) => [
+    ...p,
+    {
+      from: "bot",
+      text: `${clubByName.name}: ${clubByName.description}`,
+    },
+  ]);
+  return;
+}
+
+
+      /* ================= CLUB QUERIES ================= */
 
       if (question.includes("club")) {
-        // ALL CLUBS
         if (question.includes("all")) {
-          const reply =
-            "Clubs on campus:\n" +
-            clubs.map((c) => `• ${c.name}`).join("\n");
-          setMessages((p) => [...p, { from: "bot", text: reply }]);
+          setMessages((p) => [
+            ...p,
+            {
+              from: "bot",
+              text:
+                "Clubs on campus:\n" +
+                clubs.map((c) => `• ${c.name}`).join("\n"),
+            },
+          ]);
           return;
         }
 
-        // NON-TECHNICAL CLUBS (MUST COME FIRST)
         if (question.includes("non") && question.includes("tech")) {
           const nonTech = clubs.filter(
-            (c) =>
-              c.category &&
-              c.category.toLowerCase().trim() === "non-technical"
+            (c) => c.category?.toLowerCase().trim() === "non-technical"
           );
 
-          const reply =
-            nonTech.length === 0
-              ? "No non-technical clubs found."
-              : "Non-technical clubs:\n" +
-                nonTech.map((c) => `• ${c.name}`).join("\n");
-
-          setMessages((p) => [...p, { from: "bot", text: reply }]);
+          setMessages((p) => [
+            ...p,
+            {
+              from: "bot",
+              text:
+                nonTech.length === 0
+                  ? "No non-technical clubs found."
+                  : "Non-technical clubs:\n" +
+                    nonTech.map((c) => `• ${c.name}`).join("\n"),
+            },
+          ]);
           return;
         }
 
-        // TECHNICAL CLUBS
         if (question.includes("tech") && !question.includes("non")) {
           const tech = clubs.filter(
-            (c) =>
-              c.category &&
-              c.category.toLowerCase().trim() === "technical"
+            (c) => c.category?.toLowerCase().trim() === "technical"
           );
 
-          const reply =
-            tech.length === 0
-              ? "No technical clubs found."
-              : "Technical clubs:\n" +
-                tech.map((c) => `• ${c.name}`).join("\n");
-
-          setMessages((p) => [...p, { from: "bot", text: reply }]);
+          setMessages((p) => [
+            ...p,
+            {
+              from: "bot",
+              text:
+                tech.length === 0
+                  ? "No technical clubs found."
+                  : "Technical clubs:\n" +
+                    tech.map((c) => `• ${c.name}`).join("\n"),
+            },
+          ]);
           return;
         }
 
-        // ABOUT A CLUB
         const club = clubs.find((c) =>
           question.includes(c.name.toLowerCase())
         );
@@ -94,7 +116,7 @@ export default function ChatWidget() {
         }
       }
 
-      /* ================= EVENT QUESTIONS ================= */
+      /* ================= EVENT QUERIES ================= */
 
       const today = new Date();
       const todayStr = today.toISOString().split("T")[0];
@@ -103,13 +125,19 @@ export default function ChatWidget() {
       if (question.includes("today")) {
         const todayEvents = events.filter((e) => e.date === todayStr);
 
-        const reply =
-          todayEvents.length === 0
-            ? "No events today."
-            : "Events today:\n" +
-              todayEvents.map((e) => `• ${e.title} (${e.club})`).join("\n");
-
-        setMessages((p) => [...p, { from: "bot", text: reply }]);
+        setMessages((p) => [
+          ...p,
+          {
+            from: "bot",
+            text:
+              todayEvents.length === 0
+                ? "No events today."
+                : "Events today:\n" +
+                  todayEvents
+                    .map((e) => `• ${e.title} (${e.club})`)
+                    .join("\n"),
+          },
+        ]);
         return;
       }
 
@@ -121,13 +149,19 @@ export default function ChatWidget() {
 
         const matches = events.filter((e) => e.date === date);
 
-        const reply =
-          matches.length === 0
-            ? "No events tomorrow."
-            : "Events tomorrow:\n" +
-              matches.map((e) => `• ${e.title} (${e.club})`).join("\n");
-
-        setMessages((p) => [...p, { from: "bot", text: reply }]);
+        setMessages((p) => [
+          ...p,
+          {
+            from: "bot",
+            text:
+              matches.length === 0
+                ? "No events tomorrow."
+                : "Events tomorrow:\n" +
+                  matches
+                    .map((e) => `• ${e.title} (${e.club})`)
+                    .join("\n"),
+          },
+        ]);
         return;
       }
 
@@ -142,40 +176,53 @@ export default function ChatWidget() {
           return d >= start && d <= end;
         });
 
-        const reply =
-          weekEvents.length === 0
-            ? "No events scheduled."
-            : "Upcoming events:\n" +
-              weekEvents.map((e) => `• ${e.title} (${e.club})`).join("\n");
-
-        setMessages((p) => [...p, { from: "bot", text: reply }]);
+        setMessages((p) => [
+          ...p,
+          {
+            from: "bot",
+            text:
+              weekEvents.length === 0
+                ? "No events scheduled."
+                : "Upcoming events:\n" +
+                  weekEvents
+                    .map((e) => `• ${e.title} (${e.club})`)
+                    .join("\n"),
+          },
+        ]);
         return;
       }
 
-      // GENERAL UPCOMING EVENTS
+      // GENERAL UPCOMING EVENTS (LAST)
       if (question.includes("event")) {
         const upcoming = events.filter((e) => isFutureEvent(e.date));
 
-        const reply =
-          upcoming.length === 0
-            ? "No upcoming events."
-            : "Upcoming events:\n" +
-              upcoming.map((e) => `• ${e.title} (${e.club})`).join("\n");
-
-        setMessages((p) => [...p, { from: "bot", text: reply }]);
+        setMessages((p) => [
+          ...p,
+          {
+            from: "bot",
+            text:
+              upcoming.length === 0
+                ? "No upcoming events."
+                : "Upcoming events:\n" +
+                  upcoming
+                    .map((e) => `• ${e.title} (${e.club})`)
+                    .join("\n"),
+          },
+        ]);
         return;
       }
 
-      // FALLBACK
+      /* ================= FALLBACK ================= */
+
       setMessages((p) => [
         ...p,
         {
           from: "bot",
           text:
-            "I can help with clubs and events. Try asking about clubs or upcoming events.",
+            "I can help with clubs and events. Try asking about events today, this week, or clubs.",
         },
       ]);
-    } catch (err) {
+    } catch {
       setMessages((p) => [
         ...p,
         { from: "bot", text: "Something went wrong." },
@@ -187,12 +234,14 @@ export default function ChatWidget() {
 
   return (
     <>
+      {/* Floating Button */}
       <button
-        onClick={() => setOpen(!open)}
+        onClick={() => setOpen((o) => !o)}
         style={{
           position: "fixed",
           bottom: "20px",
           right: "20px",
+          zIndex: 9999,
           width: "60px",
           height: "60px",
           borderRadius: "50%",
@@ -200,34 +249,56 @@ export default function ChatWidget() {
           background: "#2563eb",
           color: "#fff",
           border: "none",
+          cursor: "pointer",
         }}
       >
         🤖
       </button>
 
+      {/* Chat Window */}
       {open && (
         <div
           style={{
             position: "fixed",
             bottom: "90px",
             right: "20px",
+            zIndex: 9999,
             width: "320px",
             height: "420px",
-            background: "#fff",
-            border: "1px solid #ddd",
-            borderRadius: "10px",
+            background: "#ffffff",
+            borderRadius: "12px",
+            boxShadow: "0 12px 40px rgba(0,0,0,0.35)",
             display: "flex",
             flexDirection: "column",
+            overflow: "hidden",
           }}
         >
-          <div style={{ padding: "10px", fontWeight: "bold" }}>
+          <div
+            style={{
+              padding: "10px 12px",
+              fontWeight: 700,
+              background: "#f1f5f9",
+              borderBottom: "1px solid #ddd",
+            }}
+          >
             Campus Assistant
           </div>
 
-          <div style={{ flex: 1, padding: "10px", overflowY: "auto" }}>
+          <div
+            style={{
+              flex: 1,
+              padding: "10px",
+              overflowY: "auto",
+              fontSize: "14px",
+              color: "#111827",
+            }}
+          >
             {messages.map((m, i) => (
-              <p key={i}>
-                <strong>{m.from === "user" ? "You" : "Bot"}:</strong> {m.text}
+              <p key={i} style={{ marginBottom: "8px" }}>
+                <strong style={{ color: "#2563eb" }}>
+                  {m.from === "user" ? "You" : "Bot"}:
+                </strong>{" "}
+                {m.text}
               </p>
             ))}
             {loading && <em>Thinking…</em>}
@@ -238,16 +309,23 @@ export default function ChatWidget() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Ask something…"
-              style={{ flex: 1, padding: "8px", border: "none" }}
+              style={{
+                flex: 1,
+                padding: "8px",
+                border: "none",
+                outline: "none",
+                color: "#111827",
+              }}
               onKeyDown={(e) => e.key === "Enter" && handleSend()}
             />
             <button
               onClick={handleSend}
               style={{
-                padding: "8px 12px",
+                padding: "8px 14px",
                 background: "#2563eb",
                 color: "#fff",
                 border: "none",
+                cursor: "pointer",
               }}
             >
               Send
